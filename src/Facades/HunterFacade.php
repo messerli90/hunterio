@@ -1,6 +1,6 @@
 <?php
 
-namespace Messerli90\Hunterio;
+namespace Messerli90\Hunterio\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
