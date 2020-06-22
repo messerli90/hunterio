@@ -7,10 +7,6 @@ beforeEach(function () {
     $this->response = HunterResponse::createFromJson($this->mocked_response);
 });
 
-it('creates a HunterResponse from a json object', function () {
-    assertEquals($this->mocked_response, $this->response->json_object);
-});
-
 it('gets the data attribute', function () {
     assertEquals($this->mocked_response['data'], $this->response->getData());
 });

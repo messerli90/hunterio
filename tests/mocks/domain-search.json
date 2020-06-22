@@ -37,11 +37,69 @@
                 "linkedin": null,
                 "twitter": "ciaran_lee",
                 "phone_number": null
+            },
+            {
+                "value": "janice@intercom.io",
+                "type": "personal",
+                "confidence": 92,
+                "sources": [
+                    {
+                        "domain": "github.com",
+                        "uri": "http://github.com/janicesmith",
+                        "extracted_on": "2015-07-29",
+                        "last_seen_on": "2017-07-01",
+                        "still_on_page": true
+                    },
+                    {
+                        "domain": "blog.intercom.io",
+                        "uri": "http://blog.intercom.io/were-hiring-a-support-engineer/",
+                        "extracted_on": "2015-08-29",
+                        "last_seen_on": "2017-07-01",
+                        "still_on_page": true
+                    }
+                ],
+                "first_name": "Janice",
+                "last_name": "Smith",
+                "position": "Attorney",
+                "seniority": "senior",
+                "department": "letal",
+                "linkedin": null,
+                "twitter": "janice_smith",
+                "phone_number": null
+            },
+            {
+                "value": "john@intercom.io",
+                "type": "personal",
+                "confidence": 92,
+                "sources": [
+                    {
+                        "domain": "github.com",
+                        "uri": "http://github.com/johndoe",
+                        "extracted_on": "2015-07-29",
+                        "last_seen_on": "2017-07-01",
+                        "still_on_page": true
+                    },
+                    {
+                        "domain": "blog.intercom.io",
+                        "uri": "http://blog.intercom.io/were-hiring-a-support-engineer/",
+                        "extracted_on": "2015-08-29",
+                        "last_seen_on": "2017-07-01",
+                        "still_on_page": true
+                    }
+                ],
+                "first_name": "John",
+                "last_name": "Doe",
+                "position": "Senior Engineer",
+                "seniority": "senior",
+                "department": "it",
+                "linkedin": null,
+                "twitter": "john_doe",
+                "phone_number": null
             }
         ]
     },
     "meta": {
-        "results": 35,
+        "results": 3,
         "limit": 10,
         "offset": 0,
         "params": {

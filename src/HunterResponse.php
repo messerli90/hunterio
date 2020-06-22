@@ -4,8 +4,24 @@ namespace Messerli90\Hunterio;
 
 class HunterResponse
 {
-    public $json_object;
+    /**
+     *
+     * @var mixed
+     */
+    protected $json_object;
+
+    /**
+     * Data
+     *
+     * @var mixed
+     */
     public $data;
+
+    /**
+     * Meta data
+     *
+     * @var mixed
+     */
     public $meta;
 
     public function __construct($json)
@@ -15,6 +31,12 @@ class HunterResponse
         $this->meta = $json['meta'];
     }
 
+    /**
+     * Create a new HunterResponse from a JSON
+     *
+     * @param mixed $json
+     * @return HunterResponse
+     */
     public static function createFromJson($json): self
     {
         return new self($json);
@@ -32,6 +54,8 @@ class HunterResponse
 
     public function getEmails()
     {
-        return collect($this->data['emails']);
+        return collect(array_map(function ($email) {
+            return new HunterEmail($email);
+        }, $this->data['emails']));
     }
 }
