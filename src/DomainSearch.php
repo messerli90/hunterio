@@ -227,7 +227,7 @@ class DomainSearch
         if ($client === null) {
             $client = new Zttp;
         }
-        $response = $client->__callStatic('get', [$this->make()]);
+        $response = $client->__callStatic('get', [$this->make(), []]);
 
         if ($response->isOk()) {
             return new HunterResponse($response->json());

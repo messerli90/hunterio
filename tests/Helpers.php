@@ -3,13 +3,12 @@
 namespace Tests;
 
 use GuzzleHttp\Psr7\Response;
-use Mockery;
 use Zttp\Zttp;
 use Zttp\ZttpResponse;
 
 function mockSuccessfulDomainSearchRequest()
 {
-    return Mockery::mock(Zttp::class, function ($mock) {
+    return \Mockery::mock(Zttp::class, function ($mock) {
         $mock->shouldReceive('get')->once()
             ->andReturn(
                 new ZttpResponse(
@@ -25,7 +24,7 @@ function mockSuccessfulDomainSearchRequest()
 
 function mockErrorDomainSearchRequest($error_status = 400)
 {
-    return Mockery::mock(Zttp::class, function ($mock) use ($error_status) {
+    return \Mockery::mock(Zttp::class, function ($mock) use ($error_status) {
         $mock->shouldReceive('get')->once()
             ->andReturn(
                 new ZttpResponse(

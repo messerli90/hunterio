@@ -8,6 +8,10 @@ use Messerli90\Hunterio\Exceptions\UsageException;
 use function Tests\mockErrorDomainSearchRequest;
 use function Tests\mockSuccessfulDomainSearchRequest;
 
+afterEach(function () {
+    \Mockery::close();
+});
+
 it('gets instantiated with an API key', function () {
     $domain_search = new DomainSearch('testing_api_key');
     assertEquals('testing_api_key', $domain_search->__get('api_key'));
