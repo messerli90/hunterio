@@ -225,7 +225,7 @@ class DomainSearch
     public function get(Zttp $client = null)
     {
         if ($client === null) {
-            $client = new Zttp;
+            $client = new Zttp();
         }
         $response = $client->__callStatic('get', [$this->make(), []]);
 
