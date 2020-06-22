@@ -1,4 +1,4 @@
-name: PHP Composer
+name: Run Tests
 
 on:
   push:
@@ -7,31 +7,36 @@ on:
     branches: [ master ]
 
 jobs:
-  build:
-
+  tests:
     runs-on: ubuntu-latest
 
+    strategy:
+        matrix:
+            php: [7.3, 7.4]
+            dependency-version: [prefer-lowest, prefer-stable]
+
+        fail-fast: true
+
+    name: PHP${{ matrix.php }} - ${{ matrix.dependency-version }}
+
     steps:
-    - uses: actions/checkout@v2
+        -   name: Checkout code
+            uses: actions/checkout@v2
 
-    - name: Validate composer.json and composer.lock
-      run: composer validate
-      
-    - name: Cache Composer packages
-      id: composer-cache
-      uses: actions/cache@v2
-      with:
-        path: vendor
-        key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
-        restore-keys: |
-          ${{ runner.os }}-php-
+        -   name: Cache dependencies
+            uses: actions/checkout@v2
+            with:
+                path: ~/.composer/cache/files
+                key: dependencies-php-${{ matrix.php }}-composer-${{ hashFiles('composer.json') }}
 
-    - name: Install dependencies
-      if: steps.composer-cache.outputs.cache-hit != 'true'
-      run: composer update --prefer-dist --no-progress --no-suggest
+        -   name: Setup PHP
+            uses: shivammathur/setup-php@v2
+            with:
+                php-version: ${{ matrix.php }}
+                coverage: none
 
-    # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
-    # Docs: https://getcomposer.org/doc/articles/scripts.md
+        -   name: Install dependencies
+            run: composer update --${{ matrix.dependency-version }} --prefer-dist --no-interaction --no-suggest
 
-    - name: Run tests
-      run: php ./vendor/bin/pest
+        -   name: Execute tests
+            run: vendor/bin/pest
