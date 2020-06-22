@@ -3,6 +3,10 @@
 use Messerli90\Hunterio\DomainSearch;
 use Messerli90\Hunterio\Exceptions\AuthorizationException;
 use Messerli90\Hunterio\Exceptions\InvalidRequestException;
+use Zttp\Zttp;
+
+use function Pest\Laravel\mock;
+use function PHPUnit\Framework\once;
 
 it('gets instantiated with an API key', function () {
     $domain_search = new DomainSearch('testing_api_key');
@@ -124,6 +128,10 @@ it('makes the api call when required attributes are set', function () {
     $domain_search = new DomainSearch(env('HUNTER_API_KEY'));
     $domain_search->company('Ghost')->get();
 })->skip('Do not make successful call to hunter with testing credentials');
+
+it('mocks the ZTTP Request', function () {
+    //
+});
 
 it('throws AuthorizationException when API key provided is invalid', function () {
     $domain_search = new DomainSearch('bad key');
