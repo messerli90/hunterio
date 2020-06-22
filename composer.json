@@ -1,0 +1,54 @@
+{
+    "name": "messerli90/hunterio",
+    "description": "Laravel wrapper to access Hunter.io API",
+    "keywords": [
+        "messerli90",
+        "hunterio"
+    ],
+    "homepage": "https://github.com/messerli90/hunterio",
+    "license": "MIT",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Michael Messerli",
+            "email": "michaelamesserli@gmail.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^7.1",
+        "illuminate/support": "^6.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^4.0",
+        "phpunit/phpunit": "^8.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Messerli90\\Hunterio\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Messerli90\\Hunterio\\Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit",
+        "test-coverage": "vendor/bin/phpunit --coverage-html coverage"
+
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Messerli90\\Hunterio\\HunterioServiceProvider"
+            ],
+            "aliases": {
+                "Hunterio": "Messerli90\\Hunterio\\HunterioFacade"
+            }
+        }
+    }
+}
