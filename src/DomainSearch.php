@@ -196,10 +196,10 @@ class DomainSearch
         if ($this->type) {
             $query .= "type={$this->type}&";
         }
-        if (count($this->department)) {
+        if ($this->department && count((array) $this->department)) {
             $query .= "department=" . implode(",", $this->department) . "&";
         }
-        if (count($this->seniority)) {
+        if ($this->seniority && count((array) $this->seniority)) {
             $query .= "seniority=" . implode(",", $this->seniority) . "&";
         }
         if ($this->limit) {
@@ -214,20 +214,36 @@ class DomainSearch
         return $query;
     }
 
-    public function get()
+    /**
+     *
+     * @param Zttp|null $client
+     * @return HunterResponse
+     * @throws InvalidRequestException
+     * @throws AuthorizationException
+     * @throws UsageException
+     */
+    public function get(Zttp $client = null)
     {
-        $response = Zttp::get($this->make());
+        if ($client === null) {
+            $client = new Zttp;
+        }
+        $response = $client->__callStatic('get', [$this->make()]);
 
         if ($response->isOk()) {
-            return $response->json();
+            return new HunterResponse($response->json());
         } else {
-            $this->handleErrors($response);
+            throw $this->handleErrors($response);
         }
     }
 
-    public function __get($name)
+    /**
+     *
+     * @param mixed $attr
+     * @return mixed
+     */
+    public function __get($attr)
     {
-        return $this->$name;
+        return $this->$attr;
     }
 
     protected function handleErrors(\Zttp\ZttpResponse $response)
@@ -235,14 +251,14 @@ class DomainSearch
         $message = $response->json()['errors'][0]['details'];
         if ($response->status() === 401) {
             // No valid API key was provided.
-            throw new AuthorizationException($message);
+            return new AuthorizationException($message);
         } else if (in_array($response->status(), [403, 429])) {
             // Thrown when `usage limit` or `rate limit` is reached
             // Upgrade your plan if necessary.
-            throw new UsageException($message);
+            return new UsageException($message);
         } else {
             // Your request was not valid.
-            throw new InvalidRequestException($message);
+            return new InvalidRequestException($message);
         }
     }
 }

@@ -3,6 +3,10 @@
 use Messerli90\Hunterio\DomainSearch;
 use Messerli90\Hunterio\Exceptions\AuthorizationException;
 use Messerli90\Hunterio\Exceptions\InvalidRequestException;
+use Messerli90\Hunterio\Exceptions\UsageException;
+
+use function Tests\mockErrorDomainSearchRequest;
+use function Tests\mockSuccessfulDomainSearchRequest;
 
 it('gets instantiated with an API key', function () {
     $domain_search = new DomainSearch('testing_api_key');
@@ -120,16 +124,56 @@ it('throws an InvalidRequestException when required fields are missing', functio
     $domain_search->make();
 })->throws(InvalidRequestException::class, 'Either Domain or Company fields are required.');
 
+it('initializes a ZTTP client when none is passed', function () {
+    $domain_search = new DomainSearch($_SERVER['HUNTER_API_KEY']);
+
+    $domain_search->company('Ghost')->get();
+})->throws(AuthorizationException::class);
+
 it('makes the api call when required attributes are set', function () {
     $domain_search = new DomainSearch($_SERVER['HUNTER_API_KEY']);
-    $domain_search->company('Ghost')->get();
-})->skip('Do not make successful call to hunter with testing credentials');
 
-it('mocks the ZTTP Request', function () {
-    //
+    $mock = mockSuccessfulDomainSearchRequest();
+
+    $domain_search->company('Ghost')->get($mock);
+});
+
+it('returns a HunterResponse when successful search is returned', function () {
+    $domain_search = new DomainSearch($_SERVER['HUNTER_API_KEY']);
+
+    $mock = mockSuccessfulDomainSearchRequest();
+
+    assertInstanceOf('Messerli90\Hunterio\HunterResponse', $domain_search->company('Ghost')->get($mock));
 });
 
 it('throws AuthorizationException when API key provided is invalid', function () {
     $domain_search = new DomainSearch('bad key');
-    $domain_search->company('Ghost')->get();
+
+    $mock = mockErrorDomainSearchRequest(401);
+
+    $domain_search->company('Ghost')->get($mock);
 })->throws(AuthorizationException::class);
+
+it('throws UsageException when status returns 403', function () {
+    $domain_search = new DomainSearch('bad key');
+
+    $mock = mockErrorDomainSearchRequest(403);
+
+    $domain_search->company('Ghost')->get($mock);
+})->throws(UsageException::class);
+
+it('throws UsageException when status returns 429', function () {
+    $domain_search = new DomainSearch('bad key');
+
+    $mock = mockErrorDomainSearchRequest(429);
+
+    $domain_search->company('Ghost')->get($mock);
+})->throws(UsageException::class);
+
+it('throws InvalidRequestException for other error statuses', function () {
+    $domain_search = new DomainSearch('bad key');
+
+    $mock = mockErrorDomainSearchRequest(400);
+
+    $domain_search->company('Ghost')->get($mock);
+})->throws(InvalidRequestException::class);
