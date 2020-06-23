@@ -1,0 +1,33 @@
+{
+    "data": {
+        "first_name": "Dustin",
+        "last_name": "Moskovitz",
+        "email": "dustin@asana.com",
+        "score": 72,
+        "domain": "asana.com",
+        "accept_all": false,
+        "position": "CEO",
+        "twitter": "moskov",
+        "linkedin_url": "https://www.linkedin.com/in/dmoskov",
+        "phone_number": null,
+        "company": "Asana",
+        "sources": [
+            {
+                "domain": "blog.asana.com",
+                "uri": "http://blog.asana.com",
+                "extracted_on": "2015-09-27",
+                "last_seen_on": "2017-09-01",
+                "still_on_page": true
+            }
+        ]
+    },
+    "meta": {
+        "params": {
+            "first_name": "Dustin",
+            "last_name": "Moskovitz",
+            "full_name": null,
+            "domain": "asana.com",
+            "company": null
+        }
+    }
+}

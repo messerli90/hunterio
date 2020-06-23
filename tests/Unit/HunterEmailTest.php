@@ -1,6 +1,6 @@
 <?php
 
-namespace Messerli90\Hunterio\Tests;
+namespace Messerli90\Hunterio\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
 use Messerli90\Hunterio\HunterEmail;

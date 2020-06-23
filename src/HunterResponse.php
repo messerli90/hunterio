@@ -5,13 +5,14 @@ namespace Messerli90\Hunterio;
 class HunterResponse
 {
     /**
+     * Full response body returned from Hunter.io
      *
      * @var array
      */
     public $response;
 
     /**
-     * Data
+     * Data object
      *
      * @var array
      */
@@ -59,6 +60,9 @@ class HunterResponse
 
     public function getEmails()
     {
+        if (empty($this->data['emails'])) {
+            return collect();
+        }
         return collect(array_map(function ($email) {
             return new HunterEmail($email);
         }, $this->data['emails']));

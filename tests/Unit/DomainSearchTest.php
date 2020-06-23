@@ -1,31 +1,22 @@
 <?php
 
-namespace Messerli90\Hunterio\Tests;
+namespace Messerli90\Hunterio\Tests\Unit;
 
-use Mockery;
-use Zttp\Zttp;
-use PHPUnit\Framework\TestCase;
+use Illuminate\Support\Facades\Http;
 use Messerli90\Hunterio\DomainSearch;
 use Messerli90\Hunterio\Exceptions\InvalidRequestException;
+use Messerli90\Hunterio\Tests\TestCase;
 
 class DomainSearchTest extends TestCase
 {
-    /** @var \Zttp\Zttp|\Mockery\Mock */
-    protected $http_client;
-
     /** @var \Messerli90\Hunterio\DomainSearch */
     protected $domain_search;
 
-    protected function setUp(): void
+    public function setUp(): void
     {
-        $this->http_client = Mockery::mock(Zttp::class);
+        parent::setUp();
 
-        $this->domain_search = new DomainSearch($this->http_client, 'apikey');
-    }
-
-    protected function tearDown(): void
-    {
-        Mockery::close();
+        $this->domain_search = new DomainSearch('apikey');
     }
 
     /** @test */
@@ -117,17 +108,16 @@ class DomainSearchTest extends TestCase
     }
 
     /** @test */
-    public function it_returns_a_collection_of()
+    public function it_returns_a_response_with_get()
     {
-        $this->markTestSkipped();
-        $expected_query = 'https://api.hunter.io/v2/domain-search?domain=ghost.org&api_key=apikey';
         $expected_response = file_get_contents(__DIR__ . '/../mocks/domain-search.json');
 
-        $this->http_client->shouldReceive('get')->withArgs([$expected_query])
-            ->once()->andReturn($expected_response);
+        Http::fake(function ($request) use ($expected_response) {
+            return Http::response($expected_response);
+        });
 
         $response = $this->domain_search->domain('ghost.org')->get();
 
-        dump($response);
+        $this->assertEquals(json_decode($expected_response, true)['data']['domain'], $response['data']['domain']);
     }
 }

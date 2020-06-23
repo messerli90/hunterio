@@ -1,31 +1,23 @@
 <?php
 
-namespace Messerli90\Hunterio\Tests;
+namespace Messerli90\Hunterio\Tests\Unit;
 
-use Mockery;
-use Zttp\Zttp;
-use PHPUnit\Framework\TestCase;
+use Illuminate\Support\Facades\Http;
 use Messerli90\Hunterio\EmailSearch;
 use Messerli90\Hunterio\Exceptions\InvalidRequestException;
+use Messerli90\Hunterio\HunterResponse;
+use Messerli90\Hunterio\Tests\TestCase;
 
 class EmailSearchTest extends TestCase
 {
-    /** @var \Zttp\Zttp|\Mockery\Mock */
-    protected $http_client;
-
-    /** @var \Messerli90\Hunterio\DomainSearch */
+    /** @var \Messerli90\Hunterio\EmailSearch */
     protected $email_search;
 
-    protected function setUp(): void
+    public function setUp(): void
     {
-        $this->http_client = Mockery::mock(Zttp::class);
+        parent::setUp();
 
-        $this->email_search = new EmailSearch($this->http_client, 'apikey');
-    }
-
-    protected function tearDown(): void
-    {
-        Mockery::close();
+        $this->email_search = new EmailSearch('apikey');
     }
 
     /** @test */
@@ -87,5 +79,19 @@ class EmailSearchTest extends TestCase
         $this->expectException(InvalidRequestException::class);
 
         $this->email_search->domain('ghost.org')->make();
+    }
+
+    /** @test */
+    public function it_returns_a_HunterResponse()
+    {
+        $expected_response = file_get_contents(__DIR__ . '/../mocks/email-finder.json');
+
+        Http::fake(function ($request) use ($expected_response) {
+            return Http::response($expected_response);
+        });
+
+        $response = $this->email_search->domain('ghost.org')->name('Dustin')->get();
+
+        $this->assertEquals(json_decode($expected_response, true)['data']['email'], $response['data']['email']);
     }
 }

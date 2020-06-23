@@ -2,6 +2,7 @@
 
 namespace Messerli90\Hunterio;
 
+use Illuminate\Support\Facades\Http;
 use Messerli90\Hunterio\Exceptions\InvalidRequestException;
 
 class DomainSearch extends Hunter
@@ -202,6 +203,14 @@ class DomainSearch extends Hunter
 
     public function get()
     {
-        // $this->makeRequest($this->make());
+        $query = $this->make();
+
+        $response = Http::get($query);
+
+        if ($response->ok()) {
+            return $response->json();
+        } else {
+            return $this->handleErrors($response);
+        }
     }
 }

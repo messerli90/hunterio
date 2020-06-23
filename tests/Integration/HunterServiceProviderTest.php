@@ -3,8 +3,8 @@
 namespace Messerli90\Hunterio\Tests\Integration;
 
 use DomainSearch;
-use EmailSearch;
 use Messerli90\Hunterio\Exceptions\AuthorizationException;
+use Messerli90\Hunterio\Tests\TestCase;
 
 class HunterServiceProviderTest extends TestCase
 {

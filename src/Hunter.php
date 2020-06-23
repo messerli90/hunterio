@@ -2,7 +2,7 @@
 
 namespace Messerli90\Hunterio;
 
-use Illuminate\Support\Facades\Http;
+use Illuminate\Http\Client\Response;
 use Messerli90\Hunterio\Exceptions\AuthorizationException;
 use Messerli90\Hunterio\Exceptions\InvalidRequestException;
 use Messerli90\Hunterio\Exceptions\UsageException;
@@ -14,20 +14,21 @@ class Hunter
      */
     protected $api_key;
 
-    protected $client;
+    /** @var \Illuminate\Support\Facades\Http */
+    // protected $client;
 
     /**
      * @param string|null $api_key
      * @return void
      * @throws AuthorizationException
      */
-    public function __construct($client, string $api_key = null)
+    public function __construct(string $api_key = null)
     {
         if (!$api_key) {
             throw new AuthorizationException('API key required');
         }
         $this->api_key = $api_key;
-        $this->client = $client;
+        // $this->client = $client;
     }
 
     /**
@@ -40,20 +41,7 @@ class Hunter
         return $this->$attr;
     }
 
-    public function makeRequest($query)
-    {
-        $response = Http::get($query);
-        // $response = $this->client->__callStatic('get', [$query, []]);
-
-        if ($response->ok()) {
-            return new HunterResponse($response->json());
-        } else {
-            throw $this->handleErrors($response);
-        }
-    }
-
-
-    protected function handleErrors(\Zttp\ZttpResponse $response)
+    protected function handleErrors(Response $response)
     {
         $message = $response->json()['errors'][0]['details'];
         if ($response->status() === 401) {
