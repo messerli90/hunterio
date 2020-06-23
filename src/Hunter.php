@@ -2,7 +2,7 @@
 
 namespace Messerli90\Hunterio;
 
-use Zttp\Zttp;
+use Illuminate\Support\Facades\Http;
 use Messerli90\Hunterio\Exceptions\AuthorizationException;
 use Messerli90\Hunterio\Exceptions\InvalidRequestException;
 use Messerli90\Hunterio\Exceptions\UsageException;
@@ -21,13 +21,10 @@ class Hunter
      * @return void
      * @throws AuthorizationException
      */
-    public function __construct(Zttp $client, string $api_key = null)
+    public function __construct($client, string $api_key = null)
     {
-        if ($api_key === null) {
+        if (!$api_key) {
             throw new AuthorizationException('API key required');
-        }
-        if ($client === null) {
-            $client = new Zttp();
         }
         $this->api_key = $api_key;
         $this->client = $client;
@@ -45,9 +42,10 @@ class Hunter
 
     public function makeRequest($query)
     {
-        $response = $this->client->__callStatic('get', [$query, []]);
+        $response = Http::get($query);
+        // $response = $this->client->__callStatic('get', [$query, []]);
 
-        if ($response->isOk()) {
+        if ($response->ok()) {
             return new HunterResponse($response->json());
         } else {
             throw $this->handleErrors($response);

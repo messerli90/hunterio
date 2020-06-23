@@ -2,16 +2,8 @@
 
 namespace Messerli90\Hunterio;
 
-use Messerli90\Hunterio\Exceptions\AuthorizationException;
 use Messerli90\Hunterio\Exceptions\InvalidRequestException;
-use Messerli90\Hunterio\Exceptions\UsageException;
-use Zttp\Zttp;
 
-/**
- * This API endpoint generates or retrieves the most likely email address from a domain name, a first name and a last name.
- *
- * @package Messerli90\Hunterio
- */
 class EmailSearch extends Hunter
 {
     /**
@@ -30,6 +22,7 @@ class EmailSearch extends Hunter
 
     /**
      * The person's full name
+     *
      * @var string
      */
     public $full_name;
@@ -52,7 +45,7 @@ class EmailSearch extends Hunter
      * Sets domain to search
      *
      * @param string $domain
-     * @return DomainSearch
+     * @return EmailSearch
      */
     public function domain(string $domain): self
     {
@@ -65,7 +58,7 @@ class EmailSearch extends Hunter
      * Set company name to search
      *
      * @param string $company
-     * @return DomainSearch
+     * @return EmailSearch
      */
     public function company(string $company): self
     {
@@ -134,16 +127,8 @@ class EmailSearch extends Hunter
         return $query;
     }
 
-    /**
-     *
-     * @param Zttp|null $client
-     * @return HunterResponse
-     * @throws InvalidRequestException
-     * @throws AuthorizationException
-     * @throws UsageException
-     */
     public function get()
     {
-        //
+        // $this->makeRequest($this->make());
     }
 }

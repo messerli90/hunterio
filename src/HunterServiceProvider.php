@@ -3,6 +3,7 @@
 namespace Messerli90\Hunterio;
 
 use Illuminate\Support\ServiceProvider;
+use Zttp\Zttp;
 
 class HunterServiceProvider extends ServiceProvider
 {
@@ -30,15 +31,20 @@ class HunterServiceProvider extends ServiceProvider
         // Automatically apply the package configuration
         // $this->mergeConfigFrom(__DIR__ . '/../config/config.php', 'hunterio');
 
-        // Register the main class to use with the facade
-        $this->app->bind('hunter', function () {
-            return new Hunter(config('services.hunter.key'));
+
+        $this->app->bind(DomainSearch::class, function () {
+            $api_key = config('services.hunter.key');
+            $client = new Zttp;
+            return new DomainSearch($client, $api_key);
         });
-        $this->app->bind('hunter-domain-search', function () {
-            return new DomainSearch(config('services.hunter.key'));
+
+        $this->app->bind(EmailSearch::class, function () {
+            $api_key = config('services.hunter.key');
+            $client = new Zttp;
+            return new EmailSearch($client, $api_key);
         });
-        $this->app->bind('hunter-email-search', function () {
-            return new EmailSearch(config('services.hunter.key'));
-        });
+
+        $this->app->alias(DomainSearch::class, 'hunter-domain-search');
+        $this->app->alias(EmailSearch::class, 'hunter-email-search');
     }
 }

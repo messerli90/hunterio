@@ -2,51 +2,55 @@
 
 namespace Messerli90\Hunterio;
 
-use Messerli90\Hunterio\Exceptions\AuthorizationException;
 use Messerli90\Hunterio\Exceptions\InvalidRequestException;
-use Messerli90\Hunterio\Exceptions\UsageException;
-use Zttp\Zttp;
 
 class DomainSearch extends Hunter
 {
     /**
      * Domain name from which you want to find the email addresses
+     *
      * @var string
      */
     public $domain;
 
     /**
      * The company name from which you want to find the email addresses
+     *
      * @var string
      */
     public $company;
 
     /**
      * Specifies the max number of email addresses to return
+     *
      * @var int
      */
     public $limit = 0;
 
     /**
      * Specifies the number of email addresses to skip
+     *
      * @var int
      */
     public $offset = 0;
 
     /**
      * Specifies the type of email addresses to return
+     *
      * @var string
      */
     public $type;
 
     /**
      * Specifies the selected seniority levels
+     *
      * @var array
      */
     public $seniority = [];
 
     /**
      * Specifies the selected departments
+     *
      * @var array
      */
     public $department = [];
@@ -196,26 +200,8 @@ class DomainSearch extends Hunter
         return $query;
     }
 
-    /**
-     *
-     * @param Zttp|null $client
-     * @return HunterResponse
-     * @throws InvalidRequestException
-     * @throws AuthorizationException
-     * @throws UsageException
-     */
-    public function get(Zttp $client = null)
+    public function get()
     {
-        $this->makeRequest($this->make());
-        // if ($client === null) {
-        //     $client = new Zttp();
-        // }
-        // $response = $client->__callStatic('get', [$this->make(), []]);
-
-        // if ($response->isOk()) {
-        //     return new HunterResponse($response->json());
-        // } else {
-        //     throw $this->handleErrors($response);
-        // }
+        // $this->makeRequest($this->make());
     }
 }
