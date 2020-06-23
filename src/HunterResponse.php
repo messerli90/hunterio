@@ -6,27 +6,27 @@ class HunterResponse
 {
     /**
      *
-     * @var mixed
+     * @var array
      */
-    protected $json_object;
+    public $response;
 
     /**
      * Data
      *
-     * @var mixed
+     * @var array
      */
     public $data;
 
     /**
      * Meta data
      *
-     * @var mixed
+     * @var array
      */
     public $meta;
 
     public function __construct($json)
     {
-        $this->json_object = $json;
+        $this->response = $json;
         $this->data = $json['data'];
         $this->meta = $json['meta'];
     }
@@ -40,6 +40,11 @@ class HunterResponse
     public static function createFromJson($json): self
     {
         return new self($json);
+    }
+
+    public function getResponse()
+    {
+        return $this->response;
     }
 
     public function getData()

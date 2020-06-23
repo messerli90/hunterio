@@ -7,13 +7,8 @@ use Messerli90\Hunterio\Exceptions\InvalidRequestException;
 use Messerli90\Hunterio\Exceptions\UsageException;
 use Zttp\Zttp;
 
-class DomainSearch
+class DomainSearch extends Hunter
 {
-    /**
-     * @var string api_key
-     */
-    private $api_key;
-
     /**
      * Domain name from which you want to find the email addresses
      * @var string
@@ -30,7 +25,7 @@ class DomainSearch
      * Specifies the max number of email addresses to return
      * @var int
      */
-    public $limit = 10;
+    public $limit = 0;
 
     /**
      * Specifies the number of email addresses to skip
@@ -55,19 +50,6 @@ class DomainSearch
      * @var array
      */
     public $department = [];
-
-    /**
-     * @param string|null $api_key
-     * @return void
-     * @throws AuthorizationException
-     */
-    public function __construct(string $api_key = null)
-    {
-        if ($api_key === null) {
-            throw new AuthorizationException('API key required');
-        }
-        $this->api_key = $api_key;
-    }
 
     /**
      * Sets domain to search
@@ -224,41 +206,16 @@ class DomainSearch
      */
     public function get(Zttp $client = null)
     {
-        if ($client === null) {
-            $client = new Zttp();
-        }
-        $response = $client->__callStatic('get', [$this->make(), []]);
+        $this->makeRequest($this->make());
+        // if ($client === null) {
+        //     $client = new Zttp();
+        // }
+        // $response = $client->__callStatic('get', [$this->make(), []]);
 
-        if ($response->isOk()) {
-            return new HunterResponse($response->json());
-        } else {
-            throw $this->handleErrors($response);
-        }
-    }
-
-    /**
-     *
-     * @param mixed $attr
-     * @return mixed
-     */
-    public function __get($attr)
-    {
-        return $this->$attr;
-    }
-
-    protected function handleErrors(\Zttp\ZttpResponse $response)
-    {
-        $message = $response->json()['errors'][0]['details'];
-        if ($response->status() === 401) {
-            // No valid API key was provided.
-            return new AuthorizationException($message);
-        } else if (in_array($response->status(), [403, 429])) {
-            // Thrown when `usage limit` or `rate limit` is reached
-            // Upgrade your plan if necessary.
-            return new UsageException($message);
-        } else {
-            // Your request was not valid.
-            return new InvalidRequestException($message);
-        }
+        // if ($response->isOk()) {
+        //     return new HunterResponse($response->json());
+        // } else {
+        //     throw $this->handleErrors($response);
+        // }
     }
 }

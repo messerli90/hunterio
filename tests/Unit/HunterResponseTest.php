@@ -1,21 +1,40 @@
 <?php
 
+namespace Messerli90\Hunterio\Tests;
+
+use PHPUnit\Framework\TestCase;
 use Messerli90\Hunterio\HunterResponse;
 
-beforeEach(function () {
-    $this->mocked_response = json_decode(file_get_contents(__DIR__ . '/../mocks/domain-search.json'), true);
-    $this->response = HunterResponse::createFromJson($this->mocked_response);
-});
+class HunterResponseTest extends TestCase
+{
+    /** @var array */
+    protected $response_json;
 
-it('gets the data attribute', function () {
-    assertEquals($this->mocked_response['data'], $this->response->getData());
-});
+    /** @var \Messerli90\Hunterio\HunterResponse */
+    protected $hunter_response;
 
-it('gets the meta attribute', function () {
-    assertEquals($this->mocked_response['meta'], $this->response->getMeta());
-});
+    protected function setUp(): void
+    {
+        $this->response_json = json_decode(file_get_contents(__DIR__ . '/../mocks/domain-search.json'), true);
+        $this->hunter_response = new HunterResponse($this->response_json);
+    }
 
-it('returns a collection of HunterEmail objects', function () {
-    assertInstanceOf('Illuminate\Support\Collection', $this->response->getEmails());
-    assertInstanceOf('Messerli90\Hunterio\HunterEmail', $this->response->getEmails()->first());
-});
+    /** @test */
+    public function it_gets_the_data_attribute()
+    {
+        $this->assertEquals($this->response_json['data'], $this->hunter_response->getData());
+    }
+
+    /** @test */
+    public function it_gets_the_meta_attribute()
+    {
+        $this->assertEquals($this->response_json['meta'], $this->hunter_response->getMeta());
+    }
+
+    /** @test */
+    public function it_returns_a_collection_of_HunterEmail_objects()
+    {
+        $this->assertInstanceOf('Illuminate\Support\Collection', $this->hunter_response->getEmails());
+        $this->assertInstanceOf('Messerli90\Hunterio\HunterEmail', $this->hunter_response->getEmails()->first());
+    }
+}

@@ -1,9 +1,12 @@
 {
     "name": "messerli90/hunterio",
-    "description": "Laravel wrapper to access Hunter.io API",
+    "description": "Laravel wrapper to discover email addresses throgh the Hunter.io API",
     "keywords": [
         "messerli90",
-        "hunterio"
+        "hunterio",
+        "email",
+        "api",
+        "wrapper"
     ],
     "homepage": "https://github.com/messerli90/hunterio",
     "license": "MIT",
@@ -15,18 +18,15 @@
             "role": "Developer"
         }
     ],
-    "minimum-stability": "dev",
-    "prefer-stable": true,
     "require": {
-        "php": "^7.3",
-        "illuminate/support": "^7.0",
+        "php": "^7.2",
+        "laravel/framework": "^6.0|^7.0",
         "kitetail/zttp": "^0.6.0"
     },
     "require-dev": {
         "mockery/mockery": "^1.4",
-        "pestphp/pest": "^0.2.2",
-        "pestphp/pest-plugin-laravel": "^0.2.0",
-        "phpunit/phpunit": "^9.0"
+        "phpunit/phpunit": "^8.0|^9.0",
+        "orchestra/testbench": "^4.0|^5.0"
     },
     "autoload": {
         "psr-4": {
@@ -54,5 +54,7 @@
                 "Hunterio": "Messerli90\\Hunterio\\HunterioFacade"
             }
         }
-    }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }

@@ -28,14 +28,17 @@ class HunterServiceProvider extends ServiceProvider
     public function register()
     {
         // Automatically apply the package configuration
-        $this->mergeConfigFrom(__DIR__ . '/../config/config.php', 'hunterio');
+        // $this->mergeConfigFrom(__DIR__ . '/../config/config.php', 'hunterio');
 
         // Register the main class to use with the facade
-        $this->app->singleton('hunter', function () {
+        $this->app->bind('hunter', function () {
             return new Hunter(config('services.hunter.key'));
         });
-        $this->app->singleton('hunter-domain-search', function () {
+        $this->app->bind('hunter-domain-search', function () {
             return new DomainSearch(config('services.hunter.key'));
+        });
+        $this->app->bind('hunter-email-search', function () {
+            return new EmailSearch(config('services.hunter.key'));
         });
     }
 }

@@ -1,56 +1,38 @@
 <?php
 
+namespace Messerli90\Hunterio\Tests;
+
+use PHPUnit\Framework\TestCase;
 use Messerli90\Hunterio\HunterEmail;
 
-beforeEach(function () {
-    $this->mocked_response = json_decode(file_get_contents(__DIR__ . '/../mocks/domain-search.json'), true);
-    $this->email = new HunterEmail($this->mocked_response['data']['emails'][0]);
-});
+class HunterEmailTest extends TestCase
+{
+    /** @var array */
+    protected $response_json;
 
-it('gets the value', function () {
-    assertEquals('ciaran@intercom.io', $this->email->value);
-});
+    /** @var \Messerli90\Hunterio\HunterEmail */
+    protected $email;
 
-it('gets the type', function () {
-    assertEquals('personal', $this->email->type);
-});
+    protected function setUp(): void
+    {
+        $this->response_json = json_decode(file_get_contents(__DIR__ . '/../mocks/domain-search.json'), true);
+        $this->email = new HunterEmail($this->response_json['data']['emails'][0]);
+    }
 
-it('gets the confidence', function () {
-    assertEquals(92, $this->email->confidence);
-});
-
-it('gets the sources', function () {
-    assertEquals(collect($this->mocked_response['data']['emails'][0]['sources']), $this->email->sources);
-});
-
-it('gets the first_name', function () {
-    assertEquals('Ciaran', $this->email->first_name);
-});
-
-it('gets the last_name', function () {
-    assertEquals('Lee', $this->email->last_name);
-});
-
-it('gets the position', function () {
-    assertEquals('Support Engineer', $this->email->position);
-});
-
-it('gets the seniority', function () {
-    assertEquals('senior', $this->email->seniority);
-});
-
-it('gets the department', function () {
-    assertEquals('it', $this->email->department);
-});
-
-it('gets the linkedin', function () {
-    assertEquals(null, $this->email->linkedin);
-});
-
-it('gets the twitter', function () {
-    assertEquals('ciaran_lee', $this->email->twitter);
-});
-
-it('gets the phone_number', function () {
-    assertEquals(null, $this->email->phone_number);
-});
+    /** @test */
+    public function it_returns_attributes()
+    {
+        $this->assertEquals('ciaran@intercom.io', $this->email->value);
+        $this->assertEquals('personal', $this->email->type);
+        $this->assertEquals(92, $this->email->confidence);
+        $this->assertEquals(collect($this->response_json['data']['emails'][0]['sources']), $this->email->sources);
+        $this->assertEquals('Ciaran', $this->email->first_name);
+        $this->assertEquals('Lee', $this->email->last_name);
+        $this->assertEquals('Support Engineer', $this->email->position);
+        $this->assertEquals('senior', $this->email->seniority);
+        $this->assertEquals('it', $this->email->department);
+        $this->assertEquals(null, $this->email->linkedin);
+        $this->assertEquals('ciaran_lee', $this->email->twitter);
+        $this->assertEquals(null, $this->email->phone_number);
+    }
+}

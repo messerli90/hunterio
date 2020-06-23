@@ -1,183 +1,133 @@
 <?php
 
+namespace Messerli90\Hunterio\Tests;
+
+use Mockery;
+use Zttp\Zttp;
+use PHPUnit\Framework\TestCase;
 use Messerli90\Hunterio\DomainSearch;
-use Messerli90\Hunterio\Exceptions\AuthorizationException;
 use Messerli90\Hunterio\Exceptions\InvalidRequestException;
-use Messerli90\Hunterio\Exceptions\UsageException;
 
-use function Tests\mockErrorDomainSearchRequest;
-use function Tests\mockSuccessfulDomainSearchRequest;
+class DomainSearchTest extends TestCase
+{
+    /** @var \Zttp\Zttp|\Mockery\Mock */
+    protected $http_client;
 
-afterEach(function () {
-    \Mockery::close();
-});
+    /** @var \Messerli90\Hunterio\DomainSearch */
+    protected $domain_search;
 
-it('gets instantiated with an API key', function () {
-    $domain_search = new DomainSearch('testing_api_key');
-    assertEquals('testing_api_key', $domain_search->__get('api_key'));
-    assertEquals(10, $domain_search->limit);
-});
+    protected function setUp(): void
+    {
+        $this->http_client = Mockery::mock(Zttp::class);
 
-it('throws a AuthorizationException when no API key provided', function () {
-    new DomainSearch();
-})->throws(AuthorizationException::class, 'API key required');
+        $this->domain_search = new DomainSearch($this->http_client, 'apikey');
+    }
 
-it('sets the domain that should be searched', function () {
-    $domain_search = new DomainSearch($_SERVER['HUNTER_API_KEY']);
-    $domain_search->domain('ghost.org');
-    assertEquals('ghost.org', $domain_search->domain);
-});
+    protected function tearDown(): void
+    {
+        Mockery::close();
+    }
 
-it('sets the company that should be searched', function () {
-    $domain_search = new DomainSearch($_SERVER['HUNTER_API_KEY']);
-    $domain_search->company('Ghost');
-    assertEquals('Ghost', $domain_search->company);
-});
+    /** @test */
+    public function it_gets_instantiated_with_an_API_key()
+    {
+        $this->assertEquals('apikey', $this->domain_search->__get('api_key'));
+    }
 
-it('sets the limit attribute', function () {
-    $domain_search = new DomainSearch($_SERVER['HUNTER_API_KEY']);
-    $domain_search->limit(20);
-    assertEquals(20, $domain_search->limit);
-});
+    /** @test */
+    public function it_sets_attributes()
+    {
+        $this->domain_search->domain('ghost.org');
+        $this->assertEquals('ghost.org', $this->domain_search->domain);
 
-it('sets the limit attribute to 10 if number > 100 is attempted', function () {
-    $domain_search = new DomainSearch($_SERVER['HUNTER_API_KEY']);
-    $domain_search->limit(101);
-    assertEquals(10, $domain_search->limit);
-});
+        $this->domain_search->company('Ghost');
+        $this->assertEquals('Ghost', $this->domain_search->company);
 
-it('sets the offset attribute', function () {
-    $domain_search = new DomainSearch($_SERVER['HUNTER_API_KEY']);
-    $domain_search->offset(20);
-    assertEquals(20, $domain_search->offset);
-});
+        $this->domain_search->limit(20);
+        $this->assertEquals(20, $this->domain_search->limit);
 
-it('sets the type attribute', function () {
-    $domain_search = new DomainSearch($_SERVER['HUNTER_API_KEY']);
-    $domain_search->type('personal');
-    assertEquals('personal', $domain_search->type);
-    $domain_search->type('generic');
-    assertEquals('generic', $domain_search->type);
-});
+        $this->domain_search->offset(15);
+        $this->assertEquals(15, $this->domain_search->offset);
 
-it('throws an InvalidRequestException when invalid type is supplied', function () {
-    $domain_search = new DomainSearch($_SERVER['HUNTER_API_KEY']);
-    $domain_search->type('bad type');
-})->throws(InvalidRequestException::class, 'Type must be either "generic" or "personal".');
+        $this->domain_search->type('personal');
+        $this->assertEquals('personal', $this->domain_search->type);
 
-it('sets the seniority attribute using a string', function () {
-    $domain_search = new DomainSearch($_SERVER['HUNTER_API_KEY']);
-    $domain_search->seniority('junior');
-    assertEquals(['junior'], $domain_search->seniority);
-});
+        $this->domain_search->seniority('junior');
+        $this->assertEquals(['junior'], $this->domain_search->seniority);
 
-it('sets the seniority attribute using an array', function () {
-    $domain_search = new DomainSearch($_SERVER['HUNTER_API_KEY']);
-    $domain_search->seniority(['junior', 'senior']);
-    assertEquals(['junior', 'senior'], $domain_search->seniority);
-});
+        $this->domain_search->seniority(['junior', 'senior']);
+        $this->assertEquals(['junior', 'senior'], $this->domain_search->seniority);
 
-it('ignores invalid values when setting the seniority attribute', function () {
-    $domain_search = new DomainSearch($_SERVER['HUNTER_API_KEY']);
-    $domain_search->seniority(['junior', 'senior', 'ignore', 'this too']);
-    assertEquals(['junior', 'senior'], $domain_search->seniority);
-});
+        $this->domain_search->seniority(['junior', 'senior', 'ignore', 'this too']);
+        $this->assertEquals(['junior', 'senior'], $this->domain_search->seniority);
 
-it('sets the department attribute using a string', function () {
-    $domain_search = new DomainSearch($_SERVER['HUNTER_API_KEY']);
-    $domain_search->department('it');
-    assertEquals(['it'], $domain_search->department);
-});
+        $this->domain_search->department('it');
+        $this->assertEquals(['it'], $this->domain_search->department);
 
-it('sets the department attribute using an array', function () {
-    $domain_search = new DomainSearch($_SERVER['HUNTER_API_KEY']);
-    $domain_search->department(['it', 'management']);
-    assertEquals(['it', 'management'], $domain_search->department);
-});
+        $this->domain_search->department(['it', 'management']);
+        $this->assertEquals(['it', 'management'], $this->domain_search->department);
 
-it('ignores invalid values when setting the department attribute', function () {
-    $domain_search = new DomainSearch($_SERVER['HUNTER_API_KEY']);
-    $domain_search->department(['it', 'management', 'ignore', 'this too']);
-    assertEquals(['it', 'management'], $domain_search->department);
-});
+        $this->domain_search->department(['it', 'management', 'ignore', 'this too']);
+        $this->assertEquals(['it', 'management'], $this->domain_search->department);
+    }
 
-it('can chain methods', function () {
-    $domain_search = new DomainSearch($_SERVER['HUNTER_API_KEY']);
-    $domain_search->domain('ghost.org')->company('Ghost')->limit(22)->offset(8);
-    assertEquals('ghost.org', $domain_search->domain);
-    assertEquals('Ghost', $domain_search->company);
-    assertEquals(22, $domain_search->limit);
-    assertEquals(8, $domain_search->offset);
-});
+    /** @test */
+    public function it_sets_limit_attribute_to_10_if_number_provided_is_bigger_than_100()
+    {
+        $this->domain_search->limit(101);
+        $this->assertEquals(10, $this->domain_search->limit);
+    }
 
-it('builds the query with all fields set', function () {
-    $domain_search = new DomainSearch($_SERVER['HUNTER_API_KEY']);
-    $query = $domain_search->domain('ghost.org')->department(['it', 'management'])->type('personal')
-        ->seniority('junior')->limit(2)->offset(2)->make();
-    assertEquals('https://api.hunter.io/v2/domain-search?domain=ghost.org&type=personal&department=it,management&seniority=junior&limit=2&offset=2&api_key=testing', $query);
-});
+    /** @test */
+    public function throws_an_InvalidRequestException_when_invalid_type_is_supplied()
+    {
+        $this->expectException(InvalidRequestException::class);
 
-it('builds the query with just the company name', function () {
-    $domain_search = new DomainSearch($_SERVER['HUNTER_API_KEY']);
-    $query = $domain_search->company('Ghost')->make();
-    assertEquals('https://api.hunter.io/v2/domain-search?company=Ghost&limit=10&api_key=testing', $query);
-});
+        $this->domain_search->type('bad type');
+    }
 
-it('throws an InvalidRequestException when required fields are missing', function () {
-    $domain_search = new DomainSearch($_SERVER['HUNTER_API_KEY']);
-    $domain_search->make();
-})->throws(InvalidRequestException::class, 'Either Domain or Company fields are required.');
+    /** @test */
+    public function it_can_chain_methods()
+    {
+        $this->domain_search->domain('ghost.org')->company('Ghost')->limit(22)->offset(8);
 
-it('initializes a ZTTP client when none is passed', function () {
-    $domain_search = new DomainSearch($_SERVER['HUNTER_API_KEY']);
+        $this->assertEquals('ghost.org', $this->domain_search->domain);
+        $this->assertEquals('Ghost', $this->domain_search->company);
+        $this->assertEquals(22, $this->domain_search->limit);
+        $this->assertEquals(8, $this->domain_search->offset);
+    }
 
-    $domain_search->company('Ghost')->get();
-})->throws(AuthorizationException::class);
+    /** @test */
+    public function it_builds_the_query()
+    {
+        $expected_response = 'https://api.hunter.io/v2/domain-search?domain=ghost.org&type=personal&department=it,management&seniority=junior&limit=2&offset=2&api_key=apikey';
 
-it('makes the api call when required attributes are set', function () {
-    $domain_search = new DomainSearch($_SERVER['HUNTER_API_KEY']);
+        $query = $this->domain_search->domain('ghost.org')->department(['it', 'management'])->type('personal')
+            ->seniority('junior')->limit(2)->offset(2)->make();
 
-    $mock = mockSuccessfulDomainSearchRequest();
+        $this->assertEquals($expected_response, $query);
+    }
 
-    $domain_search->company('Ghost')->get($mock);
-});
+    /** @test */
+    public function it_throws_an_InvalidRequestException_when_required_fields_are_missing()
+    {
+        $this->expectException(InvalidRequestException::class);
 
-it('returns a HunterResponse when successful search is returned', function () {
-    $domain_search = new DomainSearch($_SERVER['HUNTER_API_KEY']);
+        $this->domain_search->make();
+    }
 
-    $mock = mockSuccessfulDomainSearchRequest();
+    /** @test */
+    public function it_returns_a_collection_of()
+    {
+        $this->markTestSkipped();
+        $expected_query = 'https://api.hunter.io/v2/domain-search?domain=ghost.org&api_key=apikey';
+        $expected_response = file_get_contents(__DIR__ . '/../mocks/domain-search.json');
 
-    assertInstanceOf('Messerli90\Hunterio\HunterResponse', $domain_search->company('Ghost')->get($mock));
-});
+        $this->http_client->shouldReceive('get')->withArgs([$expected_query])
+            ->once()->andReturn($expected_response);
 
-it('throws AuthorizationException when API key provided is invalid', function () {
-    $domain_search = new DomainSearch('bad key');
+        $response = $this->domain_search->domain('ghost.org')->get();
 
-    $mock = mockErrorDomainSearchRequest(401);
-
-    $domain_search->company('Ghost')->get($mock);
-})->throws(AuthorizationException::class);
-
-it('throws UsageException when status returns 403', function () {
-    $domain_search = new DomainSearch('bad key');
-
-    $mock = mockErrorDomainSearchRequest(403);
-
-    $domain_search->company('Ghost')->get($mock);
-})->throws(UsageException::class);
-
-it('throws UsageException when status returns 429', function () {
-    $domain_search = new DomainSearch('bad key');
-
-    $mock = mockErrorDomainSearchRequest(429);
-
-    $domain_search->company('Ghost')->get($mock);
-})->throws(UsageException::class);
-
-it('throws InvalidRequestException for other error statuses', function () {
-    $domain_search = new DomainSearch('bad key');
-
-    $mock = mockErrorDomainSearchRequest(400);
-
-    $domain_search->company('Ghost')->get($mock);
-})->throws(InvalidRequestException::class);
+        dump($response);
+    }
+}
