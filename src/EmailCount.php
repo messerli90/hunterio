@@ -108,7 +108,7 @@ class EmailCount extends Hunter
         $response = Http::get($query);
 
         if ($response->ok()) {
-            return new HunterResponse($response->json(), 'count');
+            return $response->json();
         } else {
             return $this->handleErrors($response);
         }

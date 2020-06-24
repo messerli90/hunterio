@@ -65,7 +65,7 @@ class EmailCountTest extends TestCase
     }
 
     /** @test */
-    public function it_returns_a_HunterResponse()
+    public function it_returns_a_json_response()
     {
         $expected_response = file_get_contents(__DIR__ . '/../mocks/email-finder.json');
 
@@ -75,6 +75,6 @@ class EmailCountTest extends TestCase
 
         $response = $this->email_count->domain('ghost.org')->get();
 
-        $this->assertEquals(json_decode($expected_response, true)['data']['email'], $response->getData()['email']);
+        $this->assertEquals(json_decode($expected_response, true)['data']['email'], $response['data']['email']);
     }
 }

@@ -3,9 +3,6 @@
 namespace Messerli90\Hunterio\Tests\Integration;
 
 use EmailCount;
-use Illuminate\Support\Facades\Http;
-use Messerli90\Hunterio\Exceptions\AuthorizationException;
-use Messerli90\Hunterio\HunterResponse;
 use Messerli90\Hunterio\Tests\TestCase;
 
 class GetEmailCountTest extends TestCase
@@ -17,6 +14,6 @@ class GetEmailCountTest extends TestCase
 
         $response = EmailCount::domain('ghost.org')->get();
 
-        $this->assertInstanceOf(HunterResponse::class, $response);
+        $this->assertArrayHasKey('data', $response);
     }
 }

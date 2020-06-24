@@ -81,7 +81,7 @@ class EmailFinderTest extends TestCase
     }
 
     /** @test */
-    public function it_returns_a_HunterResponse()
+    public function it_returns_a_json_response()
     {
         $expected_response = file_get_contents(__DIR__ . '/../mocks/email-finder.json');
 
