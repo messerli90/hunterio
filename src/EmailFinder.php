@@ -4,6 +4,7 @@ namespace Messerli90\Hunterio;
 
 use Illuminate\Support\Facades\Http;
 use Messerli90\Hunterio\Exceptions\InvalidRequestException;
+use Messerli90\Hunterio\Interfaces\EndpointInterface;
 
 class EmailFinder extends HunterClient
 {
@@ -126,18 +127,5 @@ class EmailFinder extends HunterClient
         $query .= "api_key={$this->api_key}";
 
         return $query;
-    }
-
-    public function get()
-    {
-        $query = $this->make();
-
-        $response = Http::get($query);
-
-        if ($response->ok()) {
-            return $response->json();
-        } else {
-            return $this->handleErrors($response);
-        }
     }
 }

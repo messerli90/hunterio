@@ -2,9 +2,13 @@
 
 namespace Messerli90\Hunterio;
 
-use Illuminate\Support\Facades\Http;
 use Messerli90\Hunterio\Exceptions\InvalidRequestException;
 
+/**
+ * This API endpoint searchers all the email addresses corresponding to one website.
+ *
+ * @package Messerli90\Hunterio
+ */
 class DomainSearch extends HunterClient
 {
     /**
@@ -172,7 +176,7 @@ class DomainSearch extends HunterClient
             throw new InvalidRequestException('Either Domain or Company fields are required.');
         }
 
-        $query = 'https://api.hunter.io/v2/domain-search?';
+        $query = "{$this->base_url}/domain-search?";
 
         if ($this->company) {
             $query .= "company={$this->company}&";
@@ -199,18 +203,5 @@ class DomainSearch extends HunterClient
         $query .= "api_key={$this->api_key}";
 
         return $query;
-    }
-
-    public function get()
-    {
-        $query = $this->make();
-
-        $response = Http::get($query);
-
-        if ($response->ok()) {
-            return $response->json();
-        } else {
-            return $this->handleErrors($response);
-        }
     }
 }

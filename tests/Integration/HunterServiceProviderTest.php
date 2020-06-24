@@ -46,44 +46,4 @@ class HunterServiceProviderTest extends TestCase
 
         $this->assertInstanceOf(\Messerli90\Hunterio\Hunter::class, $domain_search);
     }
-
-    /** @test */
-    public function it_registers_the_DomainSearch_facade()
-    {
-        $this->app['config']->set('services.hunter.key', 'apikey');
-
-        $domain_search = $this->app['hunter-domain-search'];
-
-        $this->assertInstanceOf(\Messerli90\Hunterio\DomainSearch::class, $domain_search);
-    }
-
-    /** @test */
-    public function it_registers_the_EmailFinder_facade()
-    {
-        $this->app['config']->set('services.hunter.key', 'apikey');
-
-        $email_search = $this->app['hunter-email-finder'];
-
-        $this->assertInstanceOf(\Messerli90\Hunterio\EmailFinder::class, $email_search);
-    }
-
-    /** @test */
-    public function it_registers_the_EmailCount_facade()
-    {
-        $this->app['config']->set('services.hunter.key', 'apikey');
-
-        $email_search = $this->app['hunter-email-count'];
-
-        $this->assertInstanceOf(\Messerli90\Hunterio\EmailCount::class, $email_search);
-    }
-
-    /** @test */
-    public function it_registers_the_EmailVerifier_facade()
-    {
-        $this->app['config']->set('services.hunter.key', 'apikey');
-
-        $email_search = $this->app['hunter-email-verifier'];
-
-        $this->assertInstanceOf(\Messerli90\Hunterio\EmailVerifier::class, $email_search);
-    }
 }

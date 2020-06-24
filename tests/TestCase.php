@@ -37,11 +37,7 @@ abstract class TestCase extends Orchestra
     protected function getPackageAliases($app)
     {
         return [
-            'Hunter' => Hunter::class,
-            'DomainSearch' => DomainSearch::class,
-            'EmailFinder' => EmailFinder::class,
-            'EmailCount' => EmailCount::class,
-            'EmailVerifier' => EmailVerifier::class,
+            'Hunter' => Hunter::class
         ];
     }
 }

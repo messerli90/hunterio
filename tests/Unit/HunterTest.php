@@ -77,4 +77,12 @@ class HunterTest extends TestCase
         $domain_search = new DomainSearch('apikey');
         $domain_search->company('Ghost')->get();
     }
+
+    /** @test */
+    public function it_returns_a_email_count_model()
+    {
+        $hunter = new Hunter('apikey');
+
+        $hunter->emailCount()->company('ghost')->make();
+    }
 }

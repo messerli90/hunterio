@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Http;
 use Messerli90\Hunterio\Exceptions\AuthorizationException;
 use Messerli90\Hunterio\Exceptions\InvalidRequestException;
 use Messerli90\Hunterio\Exceptions\UsageException;
+use Messerli90\Hunterio\Interfaces\EndpointInterface;
 
 class EmailVerifier extends HunterClient
 {
@@ -54,18 +55,5 @@ class EmailVerifier extends HunterClient
         $query .= "api_key={$this->api_key}";
 
         return $query;
-    }
-
-    public function get()
-    {
-        $query = $this->make();
-
-        $response = Http::get($query);
-
-        if ($response->ok()) {
-            return $response->json();
-        } else {
-            return $this->handleErrors($response);
-        }
     }
 }

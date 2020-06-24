@@ -3,16 +3,19 @@
 namespace Messerli90\Hunterio;
 
 use Illuminate\Http\Client\Response;
+use Illuminate\Support\Facades\Http;
 use Messerli90\Hunterio\Exceptions\AuthorizationException;
 use Messerli90\Hunterio\Exceptions\InvalidRequestException;
 use Messerli90\Hunterio\Exceptions\UsageException;
+use Messerli90\Hunterio\Interfaces\EndpointInterface;
 
-class HunterClient
+class HunterClient implements EndpointInterface
 {
-    /**
-     * @var string api_key
-     */
+    /** @var string */
     protected $api_key;
+
+    /** @var string */
+    protected $base_url = "https://api.hunter.io/v2";
 
     /**
      * @param string|null $api_key
@@ -35,6 +38,24 @@ class HunterClient
     public function __get($attr)
     {
         return $this->$attr;
+    }
+
+    public function make()
+    {
+        //
+    }
+
+    public function get()
+    {
+        $query = $this->make();
+
+        $response = Http::get($query);
+
+        if ($response->ok()) {
+            return $response->json();
+        } else {
+            return $this->handleErrors($response);
+        }
     }
 
     protected function handleErrors(Response $response)
