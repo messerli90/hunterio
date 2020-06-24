@@ -10,14 +10,13 @@ Using this package you can easily query the [Hunter.io](https://hunter.io/) API.
 Here are some examples of the provided methods:
 
 ```php
-use DomainSearch;
-use EmailFinder;
+use Hunter;
 
 // Retrieve email addresses of people with a marketing title from ghost.org
-DomainSearch::domain('ghost.org')->department('marketing')->get();
+Hunter::domainSearch()->domain('ghost.org')->department('marketing')->get();
 
 // Find an email address belonging to John Doe working at Ghost
-EmailFinder::company('Ghost')->name('John Doe')->get();
+Hunter::emailFinder()->company('Ghost')->name('John Doe')->get();
 ```
 
 ## Installation
@@ -30,7 +29,7 @@ You can install the package via composer:
 composer require messerli90/hunterio
 ```
 
-You'll need an API key from Hunter.io (You can grab one from [https://hunter.io/api](https://hunter.io/api))
+You'll need an [API key](https://hunter.io/api) from Hunter.io
 
 Optionally, you can publish the config file of this package with this command:
 
@@ -51,8 +50,6 @@ or, manually add it to your `config/services.php` file
 
 ## Usage
 
-Each API endpoint comes with it's own Facade which can be built up by chaining the attributes you want to include.
-
 Read the [Hunter.io API Documentation](https://hunter.io/api-documentation/v2) to check how to handle each endpoint's response.
 
 ### Domain Search
@@ -61,11 +58,11 @@ Search all the email addresses corresponding to one website.
 
 ```php
 // Search by company name or website
-DomainSearch::company('Ghost')->get();
-DomainSearch::domain('ghost.org')->get();
+Hunter::domainSearch()->company('Ghost')->get();
+Hunter::domainSearch()->domain('ghost.org')->get();
 
 // Narrow your search by chaining attributes
-$query = DomainSearch::company('Ghost')->domain('ghost.org')
+$query = Hunter::domainSearch()->company('Ghost')->domain('ghost.org')
     ->seniority(['senior', 'executive'])->department('marketing')
     ->limit(5)->skip(5)->type('personal')
     ->get();
@@ -77,10 +74,10 @@ This API endpoint generates or retrieves the most likely email address from a do
 
 ```php
 // Search by first and last name
-EmailFinder::domain('ghost.org')->name('John', 'Doe')->get();
+Hunter::emailFinder()->domain('ghost.org')->name('John', 'Doe')->get();
 
 // or use a single string to search by 'full name'
-EmailFinder::company('Ghost')->name('John Doe')->get();
+Hunter::emailFinder()->company('Ghost')->name('John Doe')->get();
 ```
 
 ### Email Count
@@ -90,10 +87,10 @@ This API endpoint allows you to know how many email addresses we have for one do
 > This endpoint is public does not require an API key
 
 ```php
-EmailCount::domain('ghost.org')->get();
+Hunter::emailCount()->domain('ghost.org')->get();
 
 // Narrow search to only 'personal' addresses
-EmailCount::domain('ghost.org')->type('personal')->get();
+Hunter::emailCount()->domain('ghost.org')->type('personal')->get();
 ```
 
 ### Email Verifier
@@ -101,7 +98,7 @@ EmailCount::domain('ghost.org')->type('personal')->get();
 This API endpoint allows you to verify the deliverability of an email address.
 
 ```php
-EmailVerifier::verify('steli@close.io');
+Hunter::emailVerifier()->verify('steli@close.io');
 ```
 
 ### Email Verifier
@@ -111,6 +108,8 @@ This API endpoint enables you to get information regarding your Hunter account a
 ```php
 Hunter::account();
 ```
+
+---
 
 ### Testing
 
