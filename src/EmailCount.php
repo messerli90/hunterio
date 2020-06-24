@@ -29,9 +29,9 @@ class EmailCount extends HunterClient
      */
     public $type;
 
-    public function __construct($api_key = null)
+    public function __construct()
     {
-        $this->api_key = $api_key;
+        $this->endpoint = 'email-count';
     }
 
     /**
@@ -43,6 +43,19 @@ class EmailCount extends HunterClient
     public function domain(string $domain): self
     {
         $this->domain = $domain;
+
+        return $this;
+    }
+
+    /**
+     * Set company name to search
+     *
+     * @param string $company
+     * @return DomainSearch
+     */
+    public function company(string $company): self
+    {
+        $this->company = $company;
 
         return $this;
     }
@@ -65,40 +78,18 @@ class EmailCount extends HunterClient
         return $this;
     }
 
-    /**
-     * Set company name to search
-     *
-     * @param string $company
-     * @return DomainSearch
-     */
-    public function company(string $company): self
-    {
-        $this->company = $company;
-
-        return $this;
-    }
-
     public function make()
     {
         if (empty($this->company) && empty($this->domain)) {
             throw new InvalidRequestException('Either Domain or Company fields are required.');
         }
 
-        $query = 'https://api.hunter.io/v2/email-count?';
+        $this->query_params = [
+            'company' => $this->company ?? null,
+            'domain' => $this->domain ?? null,
+            'type' => $this->type ?? null
+        ];
 
-        if ($this->company) {
-            $query .= "company={$this->company}&";
-        }
-        if ($this->domain) {
-            $query .= "domain={$this->domain}&";
-        }
-        if ($this->type) {
-            $query .= "type={$this->type}&";
-        }
-        if ($this->api_key) {
-            $query .= "api_key={$this->api_key}";
-        }
-
-        return $query;
+        return $this->query_params;
     }
 }

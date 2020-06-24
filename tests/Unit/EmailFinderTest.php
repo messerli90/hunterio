@@ -57,7 +57,13 @@ class EmailFinderTest extends TestCase
     /** @test */
     public function it_builds_the_query()
     {
-        $expected_query = 'https://api.hunter.io/v2/email-finder?domain=ghost.org&first_name=Dustin&last_name=Moskovitz&api_key=apikey';
+        $expected_query = [
+            'company' => null,
+            'domain' => 'ghost.org',
+            'first_name' => 'Dustin',
+            'last_name' => 'Moskovitz',
+            'api_key' => 'apikey'
+        ];
 
         $query = $this->email_search->domain('ghost.org')->name('Dustin', 'Moskovitz')->make();
 

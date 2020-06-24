@@ -17,6 +17,12 @@ class HunterClient implements EndpointInterface
     /** @var string */
     protected $base_url = "https://api.hunter.io/v2";
 
+    /** @var string */
+    public $endpoint = "";
+
+    /** @var array */
+    public $query_params = [];
+
     /**
      * @param string|null $api_key
      * @return void
@@ -42,14 +48,17 @@ class HunterClient implements EndpointInterface
 
     public function make()
     {
-        //
+        return array_filter($this->query_params, fn ($q) => isset($q));
+    }
+
+    protected function buildUrl()
+    {
+        return "{$this->base_url}/{$this->endpoint}";
     }
 
     public function get()
     {
-        $query = $this->make();
-
-        $response = Http::get($query);
+        $response = Http::get($this->buildUrl(), $this->make());
 
         if ($response->ok()) {
             return $response->json();

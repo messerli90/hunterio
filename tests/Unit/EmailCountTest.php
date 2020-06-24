@@ -49,7 +49,11 @@ class EmailCountTest extends TestCase
     /** @test */
     public function it_builds_the_query()
     {
-        $expected_query = 'https://api.hunter.io/v2/email-count?domain=ghost.org&type=personal&';
+        $expected_query = [
+            'company' => null,
+            'domain' => 'ghost.org',
+            'type' => 'personal'
+        ];
 
         $query = $this->email_count->domain('ghost.org')->type('personal')->make();
 

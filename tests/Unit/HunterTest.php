@@ -79,10 +79,58 @@ class HunterTest extends TestCase
     }
 
     /** @test */
-    public function it_returns_a_email_count_model()
+    public function it_cleans_up_null_values_from_query_params()
+    {
+        $hunter = new Hunter('apikey');
+        $hunter->query_params = [
+            'company' => null,
+            'domain' => 'ghost.org',
+            'type' => null,
+            'department' => null,
+            'seniority' => null,
+            'limit' => 10,
+            'offset' => null,
+            'api_key' => 'apikey'
+        ];
+
+        $expected_query_params = [
+            'domain' => 'ghost.org',
+            'limit' => 10,
+            'api_key' => 'apikey'
+        ];
+
+        $this->assertEquals($expected_query_params, $hunter->make());
+    }
+
+    /** @test */
+    public function it_returns_a_DomainSearch_model()
     {
         $hunter = new Hunter('apikey');
 
-        $hunter->emailCount()->company('ghost')->make();
+        $this->assertInstanceOf(\Messerli90\Hunterio\DomainSearch::class, $hunter->domainSearch());
+    }
+
+    /** @test */
+    public function it_returns_a_EmailFinder_model()
+    {
+        $hunter = new Hunter('apikey');
+
+        $this->assertInstanceOf(\Messerli90\Hunterio\EmailFinder::class, $hunter->emailFinder());
+    }
+
+    /** @test */
+    public function it_returns_a_EmailCount_model()
+    {
+        $hunter = new Hunter('apikey');
+
+        $this->assertInstanceOf(\Messerli90\Hunterio\EmailCount::class, $hunter->emailCount());
+    }
+
+    /** @test */
+    public function it_returns_a_EmailVerifier_model()
+    {
+        $hunter = new Hunter('apikey');
+
+        $this->assertInstanceOf(\Messerli90\Hunterio\EmailVerifier::class, $hunter->emailVerifier());
     }
 }

@@ -43,6 +43,13 @@ class EmailFinder extends HunterClient
      */
     public $last_name;
 
+    public function __construct(string $api_key = null)
+    {
+        parent::__construct($api_key);
+
+        $this->endpoint = 'email-finder';
+    }
+
     /**
      * Sets domain to search
      *
@@ -110,22 +117,20 @@ class EmailFinder extends HunterClient
             throw new InvalidRequestException('Either full name or first and last name fields are required.');
         }
 
-        $query = 'https://api.hunter.io/v2/email-finder?';
+        $this->query_params = [
+            'company' => $this->company ?? null,
+            'domain' => $this->domain ?? null,
+            'api_key' => $this->api_key ?? null
+        ];
 
-        if ($this->company) {
-            $query .= "company={$this->company}&";
-        }
-        if ($this->domain) {
-            $query .= "domain={$this->domain}&";
-        }
         if ($this->full_name) {
-            $query .= "full_name={$this->full_name}&";
+            $this->query_params = array_merge($this->query_params, ['full_name' => $this->full_name]);
         } else {
-            $query .= "first_name={$this->first_name}&last_name={$this->last_name}&";
+            $this->query_params = array_merge($this->query_params, [
+                'first_name' => $this->first_name, 'last_name' => $this->last_name
+            ]);
         }
 
-        $query .= "api_key={$this->api_key}";
-
-        return $query;
+        return $this->query_params;
     }
 }

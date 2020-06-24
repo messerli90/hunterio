@@ -91,12 +91,21 @@ class DomainSearchTest extends TestCase
     /** @test */
     public function it_builds_the_query()
     {
-        $expected_response = 'https://api.hunter.io/v2/domain-search?domain=ghost.org&type=personal&department=it,management&seniority=junior&limit=2&offset=2&api_key=apikey';
+        $expected_query = [
+            'company' => null,
+            'domain' => 'ghost.org',
+            'type' => 'personal',
+            'department' => 'it,management',
+            'seniority' => 'junior',
+            'limit' => 2,
+            'offset' => 2,
+            'api_key' => 'apikey'
+        ];
 
         $query = $this->domain_search->domain('ghost.org')->department(['it', 'management'])->type('personal')
             ->seniority('junior')->limit(2)->offset(2)->make();
 
-        $this->assertEquals($expected_response, $query);
+        $this->assertEquals($expected_query, $query);
     }
 
     /** @test */

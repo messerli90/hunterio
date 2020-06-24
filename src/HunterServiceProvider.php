@@ -25,9 +25,6 @@ class HunterServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        // Automatically apply the package configuration
-        // $this->mergeConfigFrom(__DIR__ . '/../config/config.php', 'hunter');
-
         $this->app->bind(Hunter::class, function () {
             $api_key = $this->getConfig();
             return new Hunter($api_key);

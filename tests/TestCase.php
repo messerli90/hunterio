@@ -2,10 +2,6 @@
 
 namespace Messerli90\Hunterio\Tests;
 
-use Messerli90\Hunterio\Facades\DomainSearch;
-use Messerli90\Hunterio\Facades\EmailFinder;
-use Messerli90\Hunterio\Facades\EmailCount;
-use Messerli90\Hunterio\Facades\EmailVerifier;
 use Messerli90\Hunterio\Facades\Hunter;
 use Messerli90\Hunterio\HunterServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;

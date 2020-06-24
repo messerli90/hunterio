@@ -60,6 +60,13 @@ class DomainSearch extends HunterClient
      */
     public $department = [];
 
+    public function __construct(string $api_key = null)
+    {
+        parent::__construct($api_key);
+
+        $this->endpoint = 'domain-search';
+    }
+
     /**
      * Sets domain to search
      *
@@ -176,32 +183,17 @@ class DomainSearch extends HunterClient
             throw new InvalidRequestException('Either Domain or Company fields are required.');
         }
 
-        $query = "{$this->base_url}/domain-search?";
+        $this->query_params = [
+            'company' => $this->company ?? null,
+            'domain' => $this->domain ?? null,
+            'type' => $this->type ?? null,
+            'department' => count($this->department) ? implode(",", $this->department) : null,
+            'seniority' => count($this->seniority) ? implode(",", $this->seniority) : null,
+            'limit' => $this->limit ?? null,
+            'offset' => $this->offset ?? null,
+            'api_key' => $this->api_key ?? null
+        ];
 
-        if ($this->company) {
-            $query .= "company={$this->company}&";
-        }
-        if ($this->domain) {
-            $query .= "domain={$this->domain}&";
-        }
-        if ($this->type) {
-            $query .= "type={$this->type}&";
-        }
-        if ($this->department && count((array) $this->department)) {
-            $query .= "department=" . implode(",", $this->department) . "&";
-        }
-        if ($this->seniority && count((array) $this->seniority)) {
-            $query .= "seniority=" . implode(",", $this->seniority) . "&";
-        }
-        if ($this->limit) {
-            $query .= "limit={$this->limit}&";
-        }
-        if ($this->offset) {
-            $query .= "offset={$this->offset}&";
-        }
-
-        $query .= "api_key={$this->api_key}";
-
-        return $query;
+        return $this->query_params;
     }
 }
