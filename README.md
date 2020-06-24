@@ -51,7 +51,9 @@ or, manually add it to your `config/services.php` file
 
 ## Usage
 
-Each API endpoint comes with it's own Facade which can be built up by chaining the attributes you want to include
+Each API endpoint comes with it's own Facade which can be built up by chaining the attributes you want to include.
+
+Read the [Hunter.io API Documentation](https://hunter.io/api-documentation/v2) to check how to handle each endpoint's response.
 
 ### Domain Search
 
@@ -94,6 +96,22 @@ EmailCount::domain('ghost.org')->get();
 EmailCount::domain('ghost.org')->type('personal')->get();
 ```
 
+### Email Verifier
+
+This API endpoint allows you to verify the deliverability of an email address.
+
+```php
+EmailVerifier::verify('steli@close.io');
+```
+
+### Email Verifier
+
+This API endpoint enables you to get information regarding your Hunter account at any time.
+
+```php
+Hunter::account();
+```
+
 ### Testing
 
 ```bash
@@ -104,9 +122,9 @@ EmailCount::domain('ghost.org')->type('personal')->get();
 
 -   [x] Domain Search
 -   [x] Email Finder
--   [ ] Email Verifier
+-   [x] Email Verifier
 -   [x] Email Count
--   [ ] Account Information
+-   [x] Account Information
 -   [ ] Leads
 -   [ ] Leads List
 
