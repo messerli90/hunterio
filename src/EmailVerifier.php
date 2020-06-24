@@ -17,6 +17,13 @@ class EmailVerifier extends HunterClient
      */
     public $email;
 
+    public function __construct(string $api_key = null)
+    {
+        parent::__construct($api_key);
+
+        $this->endpoint = 'email-verifier';
+    }
+
     /**
      * Sets email to search
      *
@@ -41,7 +48,8 @@ class EmailVerifier extends HunterClient
      */
     public function verify(string $email)
     {
-        return $this->email($email)->get();
+        $this->email($email)->make();
+        return $this->get();
     }
 
     public function make()
@@ -50,10 +58,11 @@ class EmailVerifier extends HunterClient
             throw new InvalidRequestException('Email is required.');
         }
 
-        $query = 'https://api.hunter.io/v2/email-verifier?';
-        $query .= "email={$this->email}&";
-        $query .= "api_key={$this->api_key}";
+        $this->query_params = [
+            'email' => $this->email ?? null,
+            'api_key' => $this->api_key ?? null
+        ];
 
-        return $query;
+        return $this->query_params;
     }
 }
