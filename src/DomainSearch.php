@@ -141,7 +141,7 @@ class DomainSearch extends HunterClient
      * Set the selected seniority levels to include in search
      * The possible values are junior, senior or executive. Several seniority levels can be selected
      *
-     * @param string|array $type
+     * @param string|array $seniority
      * @return DomainSearch
      */
     public function seniority($seniority): self
@@ -157,7 +157,7 @@ class DomainSearch extends HunterClient
      * Set the selected departments to include in search
      * The possible values are executive, it, finance, management, sales, legal, support, hr, marketing or communication
      *
-     * @param string|array $type
+     * @param string|array $department
      * @return DomainSearch
      */
     public function department($department): self

@@ -25,12 +25,11 @@ class HunterClient implements EndpointInterface
 
     /**
      * @param string|null $api_key
-     * @return void
      * @throws AuthorizationException
      */
     public function __construct(string $api_key = null)
     {
-        if (!$api_key) {
+        if (empty($api_key)) {
             throw new AuthorizationException('API key required');
         }
         $this->api_key = $api_key;
