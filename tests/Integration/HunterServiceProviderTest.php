@@ -2,7 +2,6 @@
 
 namespace Messerli90\Hunterio\Tests\Integration;
 
-use DomainSearch;
 use Hunter;
 use Messerli90\Hunterio\Exceptions\AuthorizationException;
 use Messerli90\Hunterio\Tests\TestCase;

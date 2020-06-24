@@ -47,10 +47,14 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Messerli90\\Hunterio\\HunterioServiceProvider"
+                "Messerli90\\Hunterio\\HunterServiceProvider"
             ],
             "aliases": {
-                "Hunterio": "Messerli90\\Hunterio\\HunterioFacade"
+                "Hunter": "Messerli90\\Hunterio\\Facades\\Hunter",
+                "DomainSearch": "Messerli90\\Hunterio\\Facades\\DomainSearch",
+                "EmailFinder": "Messerli90\\Hunterio\\Facades\\EmailFinder",
+                "EmailCount": "Messerli90\\Hunterio\\Facades\\EmailCount",
+                "EmailVerifier": "Messerli90\\Hunterio\\Facades\\EmailVerifier"
             }
         }
     },
