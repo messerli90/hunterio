@@ -5,11 +5,24 @@
 [![Quality Score](https://img.shields.io/scrutinizer/g/messerli90/hunterio.svg?style=flat-square)](https://scrutinizer-ci.com/g/messerli90/hunterio)
 [![Total Downloads](https://img.shields.io/packagist/dt/messerli90/hunterio.svg?style=flat-square)](https://packagist.org/packages/messerli90/hunterio)
 
-This is a Laravel PHP wrapper for the [Hunter.io](https://hunter.io/) API.
+Using this package you can easily query the [Hunter.io](https://hunter.io/) API.
 
-> Requires PHP 7.3+
+Here are some examples of the provided methods:
+
+```php
+use DomainSearch;
+use EmailFinder;
+
+// Retrieve email addresses of people with a marketing title from ghost.org
+DomainSearch::domain('ghost.org')->department('marketing')->get();
+
+// Find an email address belonging to John Doe working at Ghost
+EmailFinder::company('Ghost')->name('John Doe')->get();
+```
 
 ## Installation
+
+> Requires PHP 7.2+
 
 You can install the package via composer:
 
@@ -17,11 +30,28 @@ You can install the package via composer:
 composer require messerli90/hunterio
 ```
 
-Get an API key at [https://hunter.io/api](https://hunter.io/api)
+You'll need an API key from Hunter.io (You can grab one from [https://hunter.io/api](https://hunter.io/api))
+
+Optionally, you can publish the config file of this package with this command:
+
+```bash
+php artisan vendor:publish --provider="Messerli90\Hunterio\HunterServiceProvider"
+```
+
+or, manually add it to your `config/services.php` file
+
+```php
+[
+    ...
+    'hunter' => [
+        'key' => env('HUNTER_API_KEY')
+    ]
+]
+```
 
 ## Usage
 
-Each API call comes with it's own Facade which can be built up by chaining the attributes you want to include
+Each API endpoint comes with it's own Facade which can be built up by chaining the attributes you want to include
 
 ### Domain Search
 
@@ -32,46 +62,53 @@ Search all the email addresses corresponding to one website.
 DomainSearch::company('Ghost')->get();
 DomainSearch::domain('ghost.org')->get();
 
-// Build your query by chaining attributes
-$query = DomainSearch::company('Ghost')->seniority(['senior', 'executive'])->department('marketing')->make();
-
-// https://api.hunter.io/v2/domain-search?company=Ghost&limit=10&api_key=XXX
+// Narrow your search by chaining attributes
+$query = DomainSearch::company('Ghost')->domain('ghost.org')
+    ->seniority(['senior', 'executive'])->department('marketing')
+    ->limit(5)->skip(5)->type('personal')
+    ->get();
 ```
 
-All available setters
+### Email Finder
+
+This API endpoint generates or retrieves the most likely email address from a domain name, a first name and a last name.
 
 ```php
-// Set domain to search
-DomainSearch::domain('ghost.org');
+// Search by first and last name
+EmailFinder::domain('ghost.org')->name('John', 'Doe')->get();
 
-// Set company to search
-DomainSearch::company('Ghost');
+// or use a single string to search by 'full name'
+EmailFinder::company('Ghost')->name('John Doe')->get();
+```
 
-// Set max number of emails to return
-DomainSearch::limit(10);
+### Email Count
 
-// Set number of email to skip
-DomainSearch::skip(5);
+This API endpoint allows you to know how many email addresses we have for one domain or for one company. It's free and doesn't require authentication.
 
-// Set the type of email addresses to search (generic or personal)
-DomainSearch::type('generic');
+> This endpoint is public does not require an API key
 
-// Set the selected seniority levels to include in search
-DomainSearch::seniority('junior');
-DomainSearch::seniority(['junior', 'senior']);
+```php
+EmailCount::domain('ghost.org')->get();
 
-// Set the selected departments to include in search
-DomainSearch::departments('support');
-DomainSearch::departments(['support', 'hr']);
+// Narrow search to only 'personal' addresses
+EmailCount::domain('ghost.org')->type('personal')->get();
 ```
 
 ### Testing
 
-To test this package replace `phpunit.xml` with `phpunit.xml.dist` and use your Hunter API in `HUNTER_API_KEY`
-
 ```bash
-./vendor/bin/pest
+./vendor/bin/phpunit
 ```
+
+### Roadmap
+
+-   [x] Domain Search
+-   [x] Email Finder
+-   [ ] Email Verifier
+-   [x] Email Count
+-   [ ] Account Information
+-   [ ] Leads
+-   [ ] Leads List
 
 ### Changelog
 
