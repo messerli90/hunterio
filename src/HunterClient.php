@@ -48,7 +48,9 @@ class HunterClient implements EndpointInterface
 
     public function make()
     {
-        return array_filter($this->query_params, fn ($q) => isset($q));
+        return array_filter($this->query_params, function ($q) {
+            return isset($q);
+        });
     }
 
     protected function buildUrl()
