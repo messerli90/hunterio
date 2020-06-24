@@ -4,6 +4,10 @@ namespace Messerli90\Hunterio\Tests\Unit;
 
 use Messerli90\Hunterio\Hunter;
 use Illuminate\Support\Facades\Http;
+use Messerli90\Hunterio\DomainSearch;
+use Messerli90\Hunterio\Exceptions\AuthorizationException;
+use Messerli90\Hunterio\Exceptions\InvalidRequestException;
+use Messerli90\Hunterio\Exceptions\UsageException;
 use Messerli90\Hunterio\Tests\TestCase;
 
 class HunterTest extends TestCase
@@ -21,46 +25,56 @@ class HunterTest extends TestCase
     /** @test */
     public function it_throws_a_AuthorizationException_when_api_key_provided_is_invalid()
     {
-        $domain_search = new DomainSearch('bad key');
+        $this->expectException(AuthorizationException::class);
 
-        $mocked_response = json_encode(file_get_contents(__DIR__ . '/../mocks/domain-search.json'), true);
-        Http::fake([
-            '*/domain-search' => Http::response($mocked_response, 200)
-        ]);
+        $error_response_mock = file_get_contents(__DIR__ . '/../mocks/error.json');
+        Http::fake(function () use ($error_response_mock) {
+            return Http::response($error_response_mock, 401);
+        });
 
-        //     $this->domain_search->company('Ghost')->get($mock);
+        $domain_search = new DomainSearch('apikey');
+        $domain_search->company('Ghost')->get();
+    }
+
+    /** @test */
+    public function throws_UsageException_when_status_returns_403()
+    {
+        $this->expectException(UsageException::class);
+
+        $error_response_mock = file_get_contents(__DIR__ . '/../mocks/error.json');
+        Http::fake(function () use ($error_response_mock) {
+            return Http::response($error_response_mock, 403);
+        });
+
+        $domain_search = new DomainSearch('apikey');
+        $domain_search->company('Ghost')->get();
+    }
+
+    /** @test */
+    public function throws_UsageException_when_status_returns_429()
+    {
+        $this->expectException(UsageException::class);
+
+        $error_response_mock = file_get_contents(__DIR__ . '/../mocks/error.json');
+        Http::fake(function () use ($error_response_mock) {
+            return Http::response($error_response_mock, 429);
+        });
+
+        $domain_search = new DomainSearch('apikey');
+        $domain_search->company('Ghost')->get();
+    }
+
+    /** @test */
+    public function throws_InvalidRequestException_for_all_other_error_cods()
+    {
+        $this->expectException(InvalidRequestException::class);
+
+        $error_response_mock = file_get_contents(__DIR__ . '/../mocks/error.json');
+        Http::fake(function () use ($error_response_mock) {
+            return Http::response($error_response_mock, 400);
+        });
+
+        $domain_search = new DomainSearch('apikey');
+        $domain_search->company('Ghost')->get();
     }
 }
-
-
-// it('throws AuthorizationException when API key provided is invalid', function () {
-//     $domain_search = new DomainSearch('bad key');
-
-//     $mock = mockErrorDomainSearchRequest(401);
-
-//     $this->domain_search->company('Ghost')->get($mock);
-// })->throws(AuthorizationException::class);
-
-// it('throws UsageException when status returns 403', function () {
-//     $domain_search = new DomainSearch('bad key');
-
-//     $mock = mockErrorDomainSearchRequest(403);
-
-//     $this->domain_search->company('Ghost')->get($mock);
-// })->throws(UsageException::class);
-
-// it('throws UsageException when status returns 429', function () {
-//     $domain_search = new DomainSearch('bad key');
-
-//     $mock = mockErrorDomainSearchRequest(429);
-
-//     $this->domain_search->company('Ghost')->get($mock);
-// })->throws(UsageException::class);
-
-// it('throws InvalidRequestException for other error statuses', function () {
-//     $domain_search = new DomainSearch('bad key');
-
-//     $mock = mockErrorDomainSearchRequest(400);
-
-//     $this->domain_search->company('Ghost')->get($mock);
-// })->throws(InvalidRequestException::class);

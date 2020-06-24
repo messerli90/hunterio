@@ -3,21 +3,20 @@
 namespace Messerli90\Hunterio\Tests\Unit;
 
 use Illuminate\Support\Facades\Http;
-use Messerli90\Hunterio\EmailSearch;
+use Messerli90\Hunterio\EmailFinder;
 use Messerli90\Hunterio\Exceptions\InvalidRequestException;
-use Messerli90\Hunterio\HunterResponse;
 use Messerli90\Hunterio\Tests\TestCase;
 
-class EmailSearchTest extends TestCase
+class EmailFinderTest extends TestCase
 {
-    /** @var \Messerli90\Hunterio\EmailSearch */
+    /** @var \Messerli90\Hunterio\EmailFinder */
     protected $email_search;
 
     public function setUp(): void
     {
         parent::setUp();
 
-        $this->email_search = new EmailSearch('apikey');
+        $this->email_search = new EmailFinder('apikey');
     }
 
     /** @test */

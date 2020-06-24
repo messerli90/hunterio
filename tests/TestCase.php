@@ -3,7 +3,7 @@
 namespace Messerli90\Hunterio\Tests;
 
 use Messerli90\Hunterio\Facades\DomainSearch;
-use Messerli90\Hunterio\Facades\EmailSearch;
+use Messerli90\Hunterio\Facades\EmailFinder;
 use Messerli90\Hunterio\Facades\EmailCount;
 use Messerli90\Hunterio\HunterServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
@@ -36,7 +36,7 @@ abstract class TestCase extends Orchestra
     {
         return [
             'DomainSearch' => DomainSearch::class,
-            'EmailSearch' => EmailSearch::class,
+            'EmailFinder' => EmailFinder::class,
             'EmailCount' => EmailCount::class,
         ];
     }

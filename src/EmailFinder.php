@@ -5,7 +5,7 @@ namespace Messerli90\Hunterio;
 use Illuminate\Support\Facades\Http;
 use Messerli90\Hunterio\Exceptions\InvalidRequestException;
 
-class EmailSearch extends Hunter
+class EmailFinder extends Hunter
 {
     /**
      * Domain name from which you want to find the email addresses
@@ -46,7 +46,7 @@ class EmailSearch extends Hunter
      * Sets domain to search
      *
      * @param string $domain
-     * @return EmailSearch
+     * @return EmailFinder
      */
     public function domain(string $domain): self
     {
@@ -59,7 +59,7 @@ class EmailSearch extends Hunter
      * Set company name to search
      *
      * @param string $company
-     * @return EmailSearch
+     * @return EmailFinder
      */
     public function company(string $company): self
     {
@@ -77,7 +77,7 @@ class EmailSearch extends Hunter
      *
      * @param string $first_name
      * @param string|null $last_name
-     * @return EmailSearch
+     * @return EmailFinder
      */
     public function name(string $first_name, string $last_name = null): self
     {

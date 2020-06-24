@@ -29,12 +29,12 @@ class HunterServiceProviderTest extends TestCase
     }
 
     /** @test */
-    public function it_registers_the_EmailSearch_facade()
+    public function it_registers_the_EmailFinder_facade()
     {
         $this->app['config']->set('services.hunter.key', 'apikey');
 
-        $email_search = $this->app['hunter-email-search'];
+        $email_search = $this->app['hunter-email-finder'];
 
-        $this->assertInstanceOf(\Messerli90\Hunterio\EmailSearch::class, $email_search);
+        $this->assertInstanceOf(\Messerli90\Hunterio\EmailFinder::class, $email_search);
     }
 }

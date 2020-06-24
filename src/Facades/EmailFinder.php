@@ -4,7 +4,7 @@ namespace Messerli90\Hunterio\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
-class EmailSearch extends Facade
+class EmailFinder extends Facade
 {
     /**
      * Get the registered name of the component.
@@ -13,6 +13,6 @@ class EmailSearch extends Facade
      */
     protected static function getFacadeAccessor()
     {
-        return 'hunter-email-search';
+        return 'hunter-email-finder';
     }
 }

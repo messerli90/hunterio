@@ -3,7 +3,6 @@
 namespace Messerli90\Hunterio;
 
 use Illuminate\Support\ServiceProvider;
-use Zttp\Zttp;
 
 class HunterServiceProvider extends ServiceProvider
 {
@@ -37,9 +36,9 @@ class HunterServiceProvider extends ServiceProvider
             return new DomainSearch($api_key);
         });
 
-        $this->app->bind(EmailSearch::class, function () {
+        $this->app->bind(EmailFinder::class, function () {
             $api_key = config('services.hunter.key');
-            return new EmailSearch($api_key);
+            return new EmailFinder($api_key);
         });
 
         $this->app->bind(EmailCount::class, function () {
@@ -48,7 +47,7 @@ class HunterServiceProvider extends ServiceProvider
         });
 
         $this->app->alias(DomainSearch::class, 'hunter-domain-search');
-        $this->app->alias(EmailSearch::class, 'hunter-email-search');
+        $this->app->alias(EmailFinder::class, 'hunter-email-finder');
         $this->app->alias(EmailCount::class, 'hunter-email-count');
     }
 }

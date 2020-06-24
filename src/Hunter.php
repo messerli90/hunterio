@@ -14,9 +14,6 @@ class Hunter
      */
     protected $api_key;
 
-    /** @var \Illuminate\Support\Facades\Http */
-    // protected $client;
-
     /**
      * @param string|null $api_key
      * @return void
@@ -28,7 +25,6 @@ class Hunter
             throw new AuthorizationException('API key required');
         }
         $this->api_key = $api_key;
-        // $this->client = $client;
     }
 
     /**
@@ -46,14 +42,14 @@ class Hunter
         $message = $response->json()['errors'][0]['details'];
         if ($response->status() === 401) {
             // No valid API key was provided.
-            return new AuthorizationException($message);
+            throw new AuthorizationException($message);
         } else if (in_array($response->status(), [403, 429])) {
             // Thrown when `usage limit` or `rate limit` is reached
             // Upgrade your plan if necessary.
-            return new UsageException($message);
+            throw new UsageException($message);
         } else {
             // Your request was not valid.
-            return new InvalidRequestException($message);
+            throw new InvalidRequestException($message);
         }
     }
 }
