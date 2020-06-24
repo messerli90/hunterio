@@ -1,23 +1,24 @@
 name: Run Tests
 
-on:
-  push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+on: [push, pull_request]
 
 jobs:
-  tests:
-    runs-on: ubuntu-latest
-
+  test:
+    runs-on: ${{ matrix.os }}
     strategy:
+        fail-fast: false
         matrix:
-            php: [7.3, 7.4]
+            os: [ubuntu-latest]
+            php: [7.2, 7.3, 7.4]
+            laravel: [6.*, 7.*]
             dependency-version: [prefer-lowest, prefer-stable]
+            include:
+                -   laravel: 7.*
+                    testbench: 5.*
+                -   laravel: 6.*
+                    testbench: 4.*
 
-        fail-fast: true
-
-    name: PHP${{ matrix.php }} - ${{ matrix.dependency-version }}
+    name: P${{ matrix.php }} - L${{ matrix.laravel }} - ${{ matrix.dependency-version }} - ${{ matrix.os }}
 
     steps:
         -   name: Checkout code
@@ -36,7 +37,8 @@ jobs:
                 coverage: none
 
         -   name: Install dependencies
-            run: composer update --${{ matrix.dependency-version }} --prefer-dist --no-interaction --no-suggest
-
+            run: |
+                composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update
+                composer update --${{ matrix.dependency-version }} --prefer-dist --no-interaction --no-suggest
         -   name: Execute tests
-            run: vendor/bin/pest
+            run: vendor/bin/phpunit
