@@ -22,7 +22,7 @@ EmailFinder::company('Ghost')->name('John Doe')->get();
 
 ## Installation
 
-> Requires PHP 7.2+
+> Requires Laravel 7+ and PHP 7.3+
 
 You can install the package via composer:
 
