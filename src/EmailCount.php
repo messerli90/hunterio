@@ -22,6 +22,18 @@ class EmailCount extends Hunter
     public $company;
 
     /**
+     * Specifies the type of email addresses to return
+     *
+     * @var string
+     */
+    public $type;
+
+    public function __construct($api_key = null)
+    {
+        $this->api_key = $api_key;
+    }
+
+    /**
      * Sets domain to search
      *
      * @param string $domain
@@ -79,8 +91,12 @@ class EmailCount extends Hunter
         if ($this->domain) {
             $query .= "domain={$this->domain}&";
         }
-
-        $query .= "api_key={$this->api_key}";
+        if ($this->type) {
+            $query .= "type={$this->type}&";
+        }
+        if ($this->api_key) {
+            $query .= "api_key={$this->api_key}";
+        }
 
         return $query;
     }
