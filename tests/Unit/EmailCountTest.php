@@ -12,7 +12,7 @@ class EmailCountTest extends TestCase
     /** @var \Messerli90\Hunterio\EmailCount */
     protected $email_count;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 

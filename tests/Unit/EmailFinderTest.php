@@ -12,7 +12,7 @@ class EmailFinderTest extends TestCase
     /** @var \Messerli90\Hunterio\EmailFinder */
     protected $email_search;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 

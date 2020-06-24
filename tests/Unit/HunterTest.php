@@ -15,7 +15,7 @@ class HunterTest extends TestCase
     /** @var \Messerli90\Hunterio\DomainSearch */
     protected $hunter;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 

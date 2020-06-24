@@ -12,7 +12,7 @@ class DomainSearchTest extends TestCase
     /** @var \Messerli90\Hunterio\DomainSearch */
     protected $domain_search;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
