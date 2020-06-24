@@ -65,14 +65,6 @@ class EmailCountTest extends TestCase
     }
 
     /** @test */
-    public function it_throws_an_InvalidRequestException_when_name_fields_are_missing()
-    {
-        $this->expectException(InvalidRequestException::class);
-
-        $this->email_count->domain('ghost.org')->make();
-    }
-
-    /** @test */
     public function it_returns_a_HunterResponse()
     {
         $expected_response = file_get_contents(__DIR__ . '/../mocks/email-finder.json');
