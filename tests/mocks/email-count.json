@@ -1,0 +1,31 @@
+{
+    "data": {
+        "total": 81,
+        "personal_emails": 65,
+        "generic_emails": 16,
+        "department": {
+            "executive": 10,
+            "it": 0,
+            "finance": 8,
+            "management": 0,
+            "sales": 0,
+            "legal": 0,
+            "support": 6,
+            "hr": 0,
+            "marketing": 0,
+            "communication": 2
+        },
+        "seniority": {
+            "junior": 13,
+            "senior": 5,
+            "executive": 2
+        }
+    },
+    "meta": {
+        "params": {
+            "domain": "stripe.com",
+            "company": null,
+            "type": null
+        }
+    }
+}

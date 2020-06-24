@@ -7,7 +7,7 @@ use Messerli90\Hunterio\Exceptions\AuthorizationException;
 use Messerli90\Hunterio\Exceptions\InvalidRequestException;
 use Messerli90\Hunterio\Exceptions\UsageException;
 
-class EmailVerifier extends Hunter
+class EmailVerifier extends HunterClient
 {
     /**
      * The email address you want to verify.

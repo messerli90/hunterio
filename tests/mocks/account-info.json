@@ -1,0 +1,15 @@
+{
+    "data": {
+        "first_name": "Antoine",
+        "last_name": "Finkelstein",
+        "email": "antoine@hunter.io",
+        "plan_name": "Pro",
+        "plan_level": 4,
+        "reset_date": "2020 - 07 - 02",
+        "team_id": 1,
+        "calls": {
+            "used": 28526,
+            "available": 50000
+        }
+    }
+}

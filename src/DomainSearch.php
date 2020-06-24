@@ -5,7 +5,7 @@ namespace Messerli90\Hunterio;
 use Illuminate\Support\Facades\Http;
 use Messerli90\Hunterio\Exceptions\InvalidRequestException;
 
-class DomainSearch extends Hunter
+class DomainSearch extends HunterClient
 {
     /**
      * Domain name from which you want to find the email addresses
