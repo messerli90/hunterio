@@ -1,7 +1,7 @@
 # Hunter.io
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/messerli90/hunterio.svg?style=flat-square)](https://packagist.org/packages/messerli90/hunterio)
-[![Build Status](https://img.shields.io/travis/messerli90/hunterio/master.svg?style=flat-square)](https://travis-ci.org/messerli90/hunterio)
+[![Build Status](https://img.shields.io/travis/messerli90/hunterio/main.svg?style=flat-square)](https://travis-ci.org/messerli90/hunterio)
 [![Quality Score](https://img.shields.io/scrutinizer/g/messerli90/hunterio.svg?style=flat-square)](https://scrutinizer-ci.com/g/messerli90/hunterio)
 [![Total Downloads](https://img.shields.io/packagist/dt/messerli90/hunterio.svg?style=flat-square)](https://packagist.org/packages/messerli90/hunterio)
 
