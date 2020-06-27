@@ -2,13 +2,14 @@
 
 namespace Messerli90\Hunterio;
 
-use Illuminate\Support\Facades\Http;
-
 class Hunter extends HunterClient
 {
     public function account()
     {
         $this->endpoint = 'account';
+        $this->query_params = [
+            'api_key' => $this->api_key ?? null
+        ];
         return $this->get();
     }
 
