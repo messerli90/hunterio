@@ -12,6 +12,9 @@ Here are some examples of the provided methods:
 ```php
 use Hunter;
 
+// Retrieve email addresses at a given domain
+Hunter::domainSearch('ghost.org')
+
 // Retrieve email addresses of people with a marketing title from ghost.org
 Hunter::domainSearch()->domain('ghost.org')->department('marketing')->get();
 
@@ -57,7 +60,10 @@ Read the [Hunter.io API Documentation](https://hunter.io/api-documentation/v2) t
 Search all the email addresses corresponding to one website.
 
 ```php
-// Search by company name or website
+// Shortcut to search by domain
+Hunter::domainSearch('ghost.org')
+
+// Specify searching by company name or domain
 Hunter::domainSearch()->company('Ghost')->get();
 Hunter::domainSearch()->domain('ghost.org')->get();
 
