@@ -21,4 +21,18 @@ class GetEmailFinderTest extends TestCase
 
         $this->assertArrayHasKey('data', $response);
     }
+
+    /** @test */
+    public function it_assumes_domain_when_argument_passed()
+    {
+        $this->app['config']->set('services.hunter.key', 'apikey');
+
+        Http::fake(function () {
+            return Http::response(file_get_contents(__DIR__ . '/../mocks/email-finder.json'));
+        });
+
+        $response = Hunter::emailFinder('ghost.org')->name('John Doe')->get();
+
+        $this->assertArrayHasKey('data', $response);
+    }
 }

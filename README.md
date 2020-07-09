@@ -79,6 +79,9 @@ $query = Hunter::domainSearch()->company('Ghost')->domain('ghost.org')
 This API endpoint generates or retrieves the most likely email address from a domain name, a first name and a last name.
 
 ```php
+// Shortcut assumes searching by domain
+Hunter::emailFinder('ghost.org')->name('John', 'Doe')->get();
+
 // Search by first and last name
 Hunter::emailFinder()->domain('ghost.org')->name('John', 'Doe')->get();
 

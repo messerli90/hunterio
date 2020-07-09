@@ -29,9 +29,12 @@ class Hunter extends HunterClient
         return (new EmailCount($this->api_key))->domain($domain)->get();
     }
 
-    public function emailFinder()
+    public function emailFinder($domain = null)
     {
-        return new EmailFinder($this->api_key);
+        if (!$domain) {
+            return new EmailFinder($this->api_key);
+        }
+        return (new EmailFinder($this->api_key))->domain($domain);
     }
 
     /**
