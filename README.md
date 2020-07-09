@@ -93,7 +93,11 @@ This API endpoint allows you to know how many email addresses we have for one do
 > This endpoint is public does not require an API key
 
 ```php
-Hunter::emailCount()->domain('ghost.org')->get();
+// Passing argument assumes searching by domain
+Hunter::emailCount('ghost.org');
+
+// Or specify domain or company name
+Hunter::emailCount()->company('Ghost')->get();
 
 // Narrow search to only 'personal' addresses
 Hunter::emailCount()->domain('ghost.org')->type('personal')->get();
