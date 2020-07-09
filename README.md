@@ -104,10 +104,10 @@ Hunter::emailCount()->domain('ghost.org')->type('personal')->get();
 This API endpoint allows you to verify the deliverability of an email address.
 
 ```php
-Hunter::emailVerifier()->verify('steli@close.io');
+Hunter::verifyEmail('steli@close.io');
 ```
 
-### Email Verifier
+### Account
 
 This API endpoint enables you to get information regarding your Hunter account at any time.
 

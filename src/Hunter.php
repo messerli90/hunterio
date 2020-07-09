@@ -31,8 +31,16 @@ class Hunter extends HunterClient
         return new EmailFinder($this->api_key);
     }
 
+    /**
+     * @deprecated v1.1.0
+     */
     public function emailVerifier()
     {
         return new EmailVerifier($this->api_key);
+    }
+
+    public function verifyEmail($email)
+    {
+        return (new EmailVerifier($this->api_key))->verify($email);
     }
 }
