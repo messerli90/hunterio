@@ -1,6 +1,6 @@
 {
     "name": "messerli90/hunterio",
-    "description": "Laravel wrapper to discover email addresses throgh the Hunter.io API",
+    "description": "Laravel wrapper to discover email addresses through the Hunter.io API",
     "keywords": [
         "messerli90",
         "hunterio",
@@ -20,12 +20,12 @@
     ],
     "require": {
         "php": "^7.2|^8.0",
-        "guzzlehttp/guzzle": "^7.0",
+        "guzzlehttp/guzzle": "^6.5|^7.0",
         "illuminate/http": "^7.0|^8.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "^9.5",
-        "orchestra/testbench": "^5.0"
+        "phpunit/phpunit": "^8.4|^9.5",
+        "orchestra/testbench": "^5.0|^6.0"
     },
     "autoload": {
         "psr-4": {
