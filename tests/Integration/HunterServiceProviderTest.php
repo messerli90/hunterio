@@ -1,15 +1,16 @@
 <?php
 
-namespace Messerli90\Hunterio\Tests\Integration;
+declare(strict_types=1);
 
+namespace Bisnow\Hunterio\Tests\Integration;
+
+use Bisnow\Hunterio\Exceptions\AuthorizationException;
+use Bisnow\Hunterio\Tests\TestCase;
 use Hunter;
-use Messerli90\Hunterio\Exceptions\AuthorizationException;
-use Messerli90\Hunterio\Tests\TestCase;
 
 class HunterServiceProviderTest extends TestCase
 {
-    /** @test */
-    public function it_will_throw_an_exception_if_hunter_api_key_is_not_set()
+    public function test_it_will_throw_an_exception_if_hunter_api_key_is_not_set(): void
     {
         $this->app['config']->set('services.hunter.key', '');
 
@@ -18,32 +19,28 @@ class HunterServiceProviderTest extends TestCase
         Hunter::account();
     }
 
-    /** @test */
-    public function it_will_check_for_a_hunter_config_file()
+    public function test_it_will_check_for_a_hunter_config_file(): void
     {
         $this->app['config']->set('hunter.key', 'hunter');
         $this->app['config']->set('services.hunter.key', 'services-hunter');
 
-        $this->assertEquals('hunter', Hunter::__get('api_key'));
+        $this->assertSame('hunter', Hunter::__get('api_key'));
     }
 
-    /** @test */
-    public function it_checks_services_config_if_hunter_config_is_missing()
+    public function test_it_checks_services_config_if_hunter_config_is_missing(): void
     {
         $this->app['config']->set('hunter.key', '');
         $this->app['config']->set('services.hunter.key', 'services-hunter');
 
-        $this->assertEquals('services-hunter', Hunter::__get('api_key'));
+        $this->assertSame('services-hunter', Hunter::__get('api_key'));
     }
 
-
-    /** @test */
-    public function it_registers_the_Hunter_facade()
+    public function test_it_registers_the__hunter_facade(): void
     {
         $this->app['config']->set('services.hunter.key', 'apikey');
 
         $domain_search = $this->app['hunterio'];
 
-        $this->assertInstanceOf(\Messerli90\Hunterio\Hunter::class, $domain_search);
+        $this->assertInstanceOf(\Bisnow\Hunterio\Hunter::class, $domain_search);
     }
 }

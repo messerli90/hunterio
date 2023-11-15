@@ -1,10 +1,12 @@
 <?php
 
-namespace Messerli90\Hunterio\Tests\Unit;
+declare(strict_types=1);
 
-use Messerli90\Hunterio\EmailVerifier;
-use Messerli90\Hunterio\Exceptions\InvalidRequestException;
-use Messerli90\Hunterio\Tests\TestCase;
+namespace Bisnow\Hunterio\Tests\Unit;
+
+use Bisnow\Hunterio\EmailVerifier;
+use Bisnow\Hunterio\Exceptions\InvalidRequestException;
+use Bisnow\Hunterio\Tests\TestCase;
 
 class EmailVerifierTest extends TestCase
 {
@@ -17,25 +19,22 @@ class EmailVerifierTest extends TestCase
         $this->email_verifier = new EmailVerifier('apikey');
     }
 
-
-    /** @test */
-    public function it_throws_an_InvalidRequestException_when_email_is_missing()
+    public function test_it_throws_an__invalid_request_exception_when_email_is_missing(): void
     {
         $this->expectException(InvalidRequestException::class);
 
         $this->email_verifier->make();
     }
 
-    /** @test */
-    public function it_builds_the_query()
+    public function test_it_builds_the_query(): void
     {
         $expected_query = [
             'email' => 'steli@close.io',
-            'api_key' => 'apikey'
+            'api_key' => 'apikey',
         ];
 
         $query = $this->email_verifier->email('steli@close.io')->make();
 
-        $this->assertEquals($expected_query, $query);
+        $this->assertSame($expected_query, $query);
     }
 }

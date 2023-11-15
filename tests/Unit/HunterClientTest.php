@@ -1,15 +1,16 @@
 <?php
 
-namespace Messerli90\Hunterio\Tests\Unit;
+declare(strict_types=1);
 
-use Messerli90\Hunterio\Exceptions\AuthorizationException;
-use Messerli90\Hunterio\HunterClient;
-use Messerli90\Hunterio\Tests\TestCase;
+namespace Bisnow\Hunterio\Tests\Unit;
+
+use Bisnow\Hunterio\Exceptions\AuthorizationException;
+use Bisnow\Hunterio\HunterClient;
+use Bisnow\Hunterio\Tests\TestCase;
 
 class HunterClientTest extends TestCase
 {
-    /** @test */
-    public function it_throws_an_AuthorizationException_when_api_key_is_missing()
+    public function test_it_throws_an__authorization_exception_when_api_key_is_missing(): void
     {
         $this->expectException(AuthorizationException::class);
 

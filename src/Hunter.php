@@ -1,6 +1,8 @@
 <?php
 
-namespace Messerli90\Hunterio;
+declare(strict_types=1);
+
+namespace Bisnow\Hunterio;
 
 class Hunter extends HunterClient
 {
@@ -8,32 +10,36 @@ class Hunter extends HunterClient
     {
         $this->endpoint = 'account';
         $this->query_params = [
-            'api_key' => $this->api_key ?? null
+            'api_key' => $this->api_key ?? null,
         ];
+
         return $this->get();
     }
 
     public function domainSearch($domain = null)
     {
-        if (!$domain) {
+        if (! $domain) {
             return new DomainSearch($this->api_key);
         }
+
         return (new DomainSearch($this->api_key))->domain($domain)->get();
     }
 
     public function emailCount($domain = null)
     {
-        if (!$domain) {
+        if (! $domain) {
             return new EmailCount($this->api_key);
         }
+
         return (new EmailCount($this->api_key))->domain($domain)->get();
     }
 
     public function emailFinder($domain = null)
     {
-        if (!$domain) {
+        if (! $domain) {
             return new EmailFinder($this->api_key);
         }
+
         return (new EmailFinder($this->api_key))->domain($domain);
     }
 

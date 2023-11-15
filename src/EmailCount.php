@@ -1,10 +1,10 @@
 <?php
 
-namespace Messerli90\Hunterio;
+declare(strict_types=1);
 
-use Illuminate\Support\Facades\Http;
-use Messerli90\Hunterio\Exceptions\InvalidRequestException;
-use Messerli90\Hunterio\Interfaces\EndpointInterface;
+namespace Bisnow\Hunterio;
+
+use Bisnow\Hunterio\Exceptions\InvalidRequestException;
 
 class EmailCount extends HunterClient
 {
@@ -37,7 +37,6 @@ class EmailCount extends HunterClient
     /**
      * Sets domain to search
      *
-     * @param string $domain
      * @return DomainSearch
      */
     public function domain(string $domain): self
@@ -50,7 +49,6 @@ class EmailCount extends HunterClient
     /**
      * Set company name to search
      *
-     * @param string $company
      * @return DomainSearch
      */
     public function company(string $company): self
@@ -65,12 +63,11 @@ class EmailCount extends HunterClient
      * A "generic" email address is a role-based email address, like contact@hunter.io.
      * On the contrary, a "personal" email address is the address of someone in the company.
      *
-     * @param string $type
      * @return DomainSearch
      */
     public function type(string $type): self
     {
-        if (!in_array($type, ['generic', 'personal'])) {
+        if (! in_array($type, ['generic', 'personal'])) {
             throw new InvalidRequestException('Type must be either "generic" or "personal".');
         }
         $this->type = $type;
@@ -87,7 +84,7 @@ class EmailCount extends HunterClient
         $this->query_params = [
             'company' => $this->company ?? null,
             'domain' => $this->domain ?? null,
-            'type' => $this->type ?? null
+            'type' => $this->type ?? null,
         ];
 
         return $this->query_params;

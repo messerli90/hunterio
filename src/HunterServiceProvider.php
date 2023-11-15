@@ -1,21 +1,23 @@
 <?php
 
-namespace Messerli90\Hunterio;
+declare(strict_types=1);
 
+namespace Bisnow\Hunterio;
+
+use Bisnow\Hunterio\Exceptions\AuthorizationException;
 use Illuminate\Support\ServiceProvider;
-use Messerli90\Hunterio\Exceptions\AuthorizationException;
 
 class HunterServiceProvider extends ServiceProvider
 {
     /**
      * Bootstrap the application services.
      */
-    public function boot()
+    public function boot(): void
     {
 
         if ($this->app->runningInConsole()) {
             $this->publishes([
-                __DIR__ . '/../config/config.php' => config_path('hunter.php'),
+                __DIR__.'/../config/config.php' => config_path('hunter.php'),
             ], 'config');
         }
     }
@@ -23,10 +25,11 @@ class HunterServiceProvider extends ServiceProvider
     /**
      * Register the application services.
      */
-    public function register()
+    public function register(): void
     {
         $this->app->bind(Hunter::class, function () {
             $api_key = $this->getConfig();
+
             return new Hunter($api_key);
         });
 

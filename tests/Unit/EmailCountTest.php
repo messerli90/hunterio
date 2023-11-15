@@ -1,15 +1,17 @@
 <?php
 
-namespace Messerli90\Hunterio\Tests\Unit;
+declare(strict_types=1);
 
+namespace Bisnow\Hunterio\Tests\Unit;
+
+use Bisnow\Hunterio\EmailCount;
+use Bisnow\Hunterio\Exceptions\InvalidRequestException;
+use Bisnow\Hunterio\Tests\TestCase;
 use Illuminate\Support\Facades\Http;
-use Messerli90\Hunterio\EmailCount;
-use Messerli90\Hunterio\Exceptions\InvalidRequestException;
-use Messerli90\Hunterio\Tests\TestCase;
 
 class EmailCountTest extends TestCase
 {
-    /** @var \Messerli90\Hunterio\EmailCount */
+    /** @var \Bisnow\Hunterio\EmailCount */
     protected $email_count;
 
     protected function setUp(): void
@@ -19,59 +21,53 @@ class EmailCountTest extends TestCase
         $this->email_count = new EmailCount();
     }
 
-    /** @test */
-    public function it_gets_instantiated_without_an_API_key()
+    public function test_it_gets_instantiated_without_an__ap_i_key(): void
     {
-        $this->assertEquals(null, $this->email_count->__get('api_key'));
+        $this->assertNull($this->email_count->__get('api_key'));
     }
 
-    /** @test */
-    public function it_sets_attributes()
+    public function test_it_sets_attributes(): void
     {
         $this->email_count->domain('ghost.org');
-        $this->assertEquals('ghost.org', $this->email_count->domain);
+        $this->assertSame('ghost.org', $this->email_count->domain);
 
         $this->email_count->company('Ghost');
-        $this->assertEquals('Ghost', $this->email_count->company);
+        $this->assertSame('Ghost', $this->email_count->company);
 
         $this->email_count->type('personal');
-        $this->assertEquals('personal', $this->email_count->type);
+        $this->assertSame('personal', $this->email_count->type);
     }
 
-    /** @test */
-    public function throws_an_InvalidRequestException_when_invalid_type_is_supplied()
+    public function test_throws_an__invalid_request_exception_when_invalid_type_is_supplied(): void
     {
         $this->expectException(InvalidRequestException::class);
 
         $this->email_count->type('bad type');
     }
 
-    /** @test */
-    public function it_builds_the_query()
+    public function test_it_builds_the_query(): void
     {
         $expected_query = [
             'company' => null,
             'domain' => 'ghost.org',
-            'type' => 'personal'
+            'type' => 'personal',
         ];
 
         $query = $this->email_count->domain('ghost.org')->type('personal')->make();
 
-        $this->assertEquals($expected_query, $query);
+        $this->assertSame($expected_query, $query);
     }
 
-    /** @test */
-    public function it_throws_an_InvalidRequestException_when_company_or_domain_fields_are_missing()
+    public function test_it_throws_an__invalid_request_exception_when_company_or_domain_fields_are_missing(): void
     {
         $this->expectException(InvalidRequestException::class);
 
         $this->email_count->make();
     }
 
-    /** @test */
-    public function it_returns_a_json_response()
+    public function test_it_returns_a_json_response(): void
     {
-        $expected_response = file_get_contents(__DIR__ . '/../mocks/email-finder.json');
+        $expected_response = file_get_contents(__DIR__.'/../mocks/email-finder.json');
 
         Http::fake(function ($request) use ($expected_response) {
             return Http::response($expected_response);
@@ -79,6 +75,6 @@ class EmailCountTest extends TestCase
 
         $response = $this->email_count->domain('ghost.org')->get();
 
-        $this->assertEquals(json_decode($expected_response, true)['data']['email'], $response['data']['email']);
+        $this->assertSame(json_decode($expected_response, true)['data']['email'], $response['data']['email']);
     }
 }

@@ -1,6 +1,8 @@
 <?php
 
-namespace Messerli90\Hunterio\Exceptions;
+declare(strict_types=1);
+
+namespace Bisnow\Hunterio\Exceptions;
 
 use Exception;
 

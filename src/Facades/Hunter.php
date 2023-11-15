@@ -1,6 +1,8 @@
 <?php
 
-namespace Messerli90\Hunterio\Facades;
+declare(strict_types=1);
+
+namespace Bisnow\Hunterio\Facades;
 
 use Illuminate\Support\Facades\Facade;
 

@@ -1,18 +1,20 @@
 <?php
 
-namespace Messerli90\Hunterio\Tests\Unit;
+declare(strict_types=1);
 
-use Messerli90\Hunterio\Hunter;
+namespace Bisnow\Hunterio\Tests\Unit;
+
+use Bisnow\Hunterio\DomainSearch;
+use Bisnow\Hunterio\Exceptions\AuthorizationException;
+use Bisnow\Hunterio\Exceptions\InvalidRequestException;
+use Bisnow\Hunterio\Exceptions\UsageException;
+use Bisnow\Hunterio\Hunter;
+use Bisnow\Hunterio\Tests\TestCase;
 use Illuminate\Support\Facades\Http;
-use Messerli90\Hunterio\DomainSearch;
-use Messerli90\Hunterio\Exceptions\AuthorizationException;
-use Messerli90\Hunterio\Exceptions\InvalidRequestException;
-use Messerli90\Hunterio\Exceptions\UsageException;
-use Messerli90\Hunterio\Tests\TestCase;
 
 class HunterTest extends TestCase
 {
-    /** @var \Messerli90\Hunterio\DomainSearch */
+    /** @var \Bisnow\Hunterio\DomainSearch */
     protected $hunter;
 
     protected function setUp(): void
@@ -22,12 +24,11 @@ class HunterTest extends TestCase
         $this->hunter = new Hunter('apikey');
     }
 
-    /** @test */
-    public function it_throws_a_AuthorizationException_when_api_key_provided_is_invalid()
+    public function test_it_throws_a__authorization_exception_when_api_key_provided_is_invalid(): void
     {
         $this->expectException(AuthorizationException::class);
 
-        $error_response_mock = file_get_contents(__DIR__ . '/../mocks/error.json');
+        $error_response_mock = file_get_contents(__DIR__.'/../mocks/error.json');
         Http::fake(function () use ($error_response_mock) {
             return Http::response($error_response_mock, 401);
         });
@@ -36,12 +37,11 @@ class HunterTest extends TestCase
         $domain_search->company('Ghost')->get();
     }
 
-    /** @test */
-    public function throws_UsageException_when_status_returns_403()
+    public function test_throws__usage_exception_when_status_returns_403(): void
     {
         $this->expectException(UsageException::class);
 
-        $error_response_mock = file_get_contents(__DIR__ . '/../mocks/error.json');
+        $error_response_mock = file_get_contents(__DIR__.'/../mocks/error.json');
         Http::fake(function () use ($error_response_mock) {
             return Http::response($error_response_mock, 403);
         });
@@ -50,12 +50,11 @@ class HunterTest extends TestCase
         $domain_search->company('Ghost')->get();
     }
 
-    /** @test */
-    public function throws_UsageException_when_status_returns_429()
+    public function test_throws__usage_exception_when_status_returns_429(): void
     {
         $this->expectException(UsageException::class);
 
-        $error_response_mock = file_get_contents(__DIR__ . '/../mocks/error.json');
+        $error_response_mock = file_get_contents(__DIR__.'/../mocks/error.json');
         Http::fake(function () use ($error_response_mock) {
             return Http::response($error_response_mock, 429);
         });
@@ -64,12 +63,11 @@ class HunterTest extends TestCase
         $domain_search->company('Ghost')->get();
     }
 
-    /** @test */
-    public function throws_InvalidRequestException_for_all_other_error_cods()
+    public function test_throws__invalid_request_exception_for_all_other_error_cods(): void
     {
         $this->expectException(InvalidRequestException::class);
 
-        $error_response_mock = file_get_contents(__DIR__ . '/../mocks/error.json');
+        $error_response_mock = file_get_contents(__DIR__.'/../mocks/error.json');
         Http::fake(function () use ($error_response_mock) {
             return Http::response($error_response_mock, 400);
         });
@@ -78,8 +76,7 @@ class HunterTest extends TestCase
         $domain_search->company('Ghost')->get();
     }
 
-    /** @test */
-    public function it_cleans_up_null_values_from_query_params()
+    public function test_it_cleans_up_null_values_from_query_params(): void
     {
         $hunter = new Hunter('apikey');
         $hunter->query_params = [
@@ -90,47 +87,43 @@ class HunterTest extends TestCase
             'seniority' => null,
             'limit' => 10,
             'offset' => null,
-            'api_key' => 'apikey'
+            'api_key' => 'apikey',
         ];
 
         $expected_query_params = [
             'domain' => 'ghost.org',
             'limit' => 10,
-            'api_key' => 'apikey'
+            'api_key' => 'apikey',
         ];
 
-        $this->assertEquals($expected_query_params, $hunter->make());
+        $this->assertSame($expected_query_params, $hunter->make());
     }
 
-    /** @test */
-    public function it_returns_a_DomainSearch_model()
+    public function test_it_returns_a__domain_search_model(): void
     {
         $hunter = new Hunter('apikey');
 
-        $this->assertInstanceOf(\Messerli90\Hunterio\DomainSearch::class, $hunter->domainSearch());
+        $this->assertInstanceOf(\Bisnow\Hunterio\DomainSearch::class, $hunter->domainSearch());
     }
 
-    /** @test */
-    public function it_returns_a_EmailFinder_model()
+    public function test_it_returns_a__email_finder_model(): void
     {
         $hunter = new Hunter('apikey');
 
-        $this->assertInstanceOf(\Messerli90\Hunterio\EmailFinder::class, $hunter->emailFinder());
+        $this->assertInstanceOf(\Bisnow\Hunterio\EmailFinder::class, $hunter->emailFinder());
     }
 
-    /** @test */
-    public function it_returns_a_EmailCount_model()
+    public function test_it_returns_a__email_count_model(): void
     {
         $hunter = new Hunter('apikey');
 
-        $this->assertInstanceOf(\Messerli90\Hunterio\EmailCount::class, $hunter->emailCount());
+        $this->assertInstanceOf(\Bisnow\Hunterio\EmailCount::class, $hunter->emailCount());
     }
 
-    /** @test */
-    public function it_returns_a_EmailVerifier_model()
+    public function test_it_returns_a__email_verifier_model(): void
     {
         $hunter = new Hunter('apikey');
 
-        $this->assertInstanceOf(\Messerli90\Hunterio\EmailVerifier::class, $hunter->emailVerifier());
+        $this->assertInstanceOf(\Bisnow\Hunterio\EmailVerifier::class, $hunter->emailVerifier());
     }
 }

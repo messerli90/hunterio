@@ -1,9 +1,11 @@
 <?php
 
-namespace Messerli90\Hunterio\Tests;
+declare(strict_types=1);
 
-use Messerli90\Hunterio\Facades\Hunter;
-use Messerli90\Hunterio\HunterServiceProvider;
+namespace Bisnow\Hunterio\Tests;
+
+use Bisnow\Hunterio\Facades\Hunter;
+use Bisnow\Hunterio\HunterServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
 
 abstract class TestCase extends Orchestra
@@ -14,8 +16,7 @@ abstract class TestCase extends Orchestra
     }
 
     /**
-     * @param \Illuminate\Foundation\Application $app
-     *
+     * @param  \Illuminate\Foundation\Application  $app
      * @return array
      */
     protected function getPackageProviders($app)
@@ -26,14 +27,13 @@ abstract class TestCase extends Orchestra
     }
 
     /**
-     * @param \Illuminate\Foundation\Application $app
-     *
+     * @param  \Illuminate\Foundation\Application  $app
      * @return array
      */
     protected function getPackageAliases($app)
     {
         return [
-            'Hunter' => Hunter::class
+            'Hunter' => Hunter::class,
         ];
     }
 }

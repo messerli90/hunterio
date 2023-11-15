@@ -1,8 +1,8 @@
-build
-composer.lock
-docs
-vendor
-coverage
-phpunit.xml
-.phpunit.result.cache
 .idea/
+.phpunit.cache/
+build/
+coverage/
+docs/
+vendor/
+composer.lock
+phpunit.xml

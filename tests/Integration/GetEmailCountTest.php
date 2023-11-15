@@ -1,14 +1,15 @@
 <?php
 
-namespace Messerli90\Hunterio\Tests\Integration;
+declare(strict_types=1);
 
+namespace Bisnow\Hunterio\Tests\Integration;
+
+use Bisnow\Hunterio\Tests\TestCase;
 use Hunter;
-use Messerli90\Hunterio\Tests\TestCase;
 
 class GetEmailCountTest extends TestCase
 {
-    /** @test */
-    public function it_returns_a_response_with_domain()
+    public function test_it_returns_a_response_with_domain(): void
     {
         $this->app['config']->set('services.hunter.key', 'apikey');
 
@@ -17,8 +18,7 @@ class GetEmailCountTest extends TestCase
         $this->assertArrayHasKey('data', $response);
     }
 
-    /** @test */
-    public function it_returns_a_response_with_company()
+    public function test_it_returns_a_response_with_company(): void
     {
         $this->app['config']->set('services.hunter.key', 'apikey');
 
@@ -27,8 +27,7 @@ class GetEmailCountTest extends TestCase
         $this->assertArrayHasKey('data', $response);
     }
 
-    /** @test */
-    public function it_assumes_domain_when_passing_a_constructor()
+    public function test_it_assumes_domain_when_passing_a_constructor(): void
     {
         $this->app['config']->set('services.hunter.key', 'apikey');
 

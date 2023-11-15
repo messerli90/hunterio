@@ -1,15 +1,17 @@
 <?php
 
-namespace Messerli90\Hunterio\Tests\Unit;
+declare(strict_types=1);
 
+namespace Bisnow\Hunterio\Tests\Unit;
+
+use Bisnow\Hunterio\EmailFinder;
+use Bisnow\Hunterio\Exceptions\InvalidRequestException;
+use Bisnow\Hunterio\Tests\TestCase;
 use Illuminate\Support\Facades\Http;
-use Messerli90\Hunterio\EmailFinder;
-use Messerli90\Hunterio\Exceptions\InvalidRequestException;
-use Messerli90\Hunterio\Tests\TestCase;
 
 class EmailFinderTest extends TestCase
 {
-    /** @var \Messerli90\Hunterio\EmailFinder */
+    /** @var \Bisnow\Hunterio\EmailFinder */
     protected $email_search;
 
     protected function setUp(): void
@@ -19,77 +21,70 @@ class EmailFinderTest extends TestCase
         $this->email_search = new EmailFinder('apikey');
     }
 
-    /** @test */
-    public function it_gets_instantiated_with_an_API_key()
+    public function test_it_gets_instantiated_with_an__ap_i_key(): void
     {
-        $this->assertEquals('apikey', $this->email_search->__get('api_key'));
+        $this->assertSame('apikey', $this->email_search->__get('api_key'));
     }
 
-    /** @test */
-    public function it_sets_domain_and_company_attributes()
+    public function test_it_sets_domain_and_company_attributes(): void
     {
         $this->email_search->domain('ghost.org');
-        $this->assertEquals('ghost.org', $this->email_search->domain);
+        $this->assertSame('ghost.org', $this->email_search->domain);
 
         $this->email_search->company('Ghost');
-        $this->assertEquals('Ghost', $this->email_search->company);
+        $this->assertSame('Ghost', $this->email_search->company);
     }
 
-    /** @test */
-    public function it_sets_the_name_attribute()
+    public function test_it_sets_the_name_attribute(): void
     {
         $this->email_search->name('Dustin Moskovitz');
-        $this->assertEquals('Dustin+Moskovitz', $this->email_search->full_name);
-        $this->assertEquals(null, $this->email_search->first_name);
-        $this->assertEquals(null, $this->email_search->last_name);
+        $this->assertSame('Dustin+Moskovitz', $this->email_search->full_name);
+        $this->assertNull($this->email_search->first_name);
+        $this->assertNull($this->email_search->last_name);
 
         $this->email_search->name('Dustin', 'Moskovitz');
-        $this->assertEquals(null, $this->email_search->full_name);
-        $this->assertEquals('Dustin', $this->email_search->first_name);
-        $this->assertEquals('Moskovitz', $this->email_search->last_name);
+        $this->assertNull($this->email_search->full_name);
+        $this->assertSame('Dustin', $this->email_search->first_name);
+        $this->assertSame('Moskovitz', $this->email_search->last_name);
 
         $this->email_search->name('Dustin', 'Moskovitz')->name('Dustin Moskovitz');
-        $this->assertEquals('Dustin+Moskovitz', $this->email_search->full_name);
-        $this->assertEquals(null, $this->email_search->first_name);
-        $this->assertEquals(null, $this->email_search->last_name);
+        $this->assertSame('Dustin+Moskovitz', $this->email_search->full_name);
+        $this->assertNull($this->email_search->first_name);
+        $this->assertNull($this->email_search->last_name);
     }
 
-    /** @test */
-    public function it_builds_the_query()
+    public function test_it_builds_the_query(): void
     {
         $expected_query = [
             'company' => null,
             'domain' => 'ghost.org',
+            'api_key' => 'apikey',
             'first_name' => 'Dustin',
             'last_name' => 'Moskovitz',
-            'api_key' => 'apikey'
         ];
 
         $query = $this->email_search->domain('ghost.org')->name('Dustin', 'Moskovitz')->make();
 
-        $this->assertEquals($expected_query, $query);
+        $this->assertSame($expected_query, $query);
     }
 
-    /** @test */
-    public function it_throws_an_InvalidRequestException_when_company_or_domain_fields_are_missing()
+    public function test_it_throws_an__invalid_request_exception_when_company_or_domain_fields_are_missing(): void
     {
         $this->expectException(InvalidRequestException::class);
 
         $this->email_search->name('Dustin Moskovitz')->make();
     }
 
-    /** @test */
-    public function it_throws_an_InvalidRequestException_when_name_fields_are_missing()
+    public function test_it_throws_an__invalid_request_exception_when_name_fields_are_missing(): void
     {
         $this->expectException(InvalidRequestException::class);
 
         $this->email_search->domain('ghost.org')->make();
     }
 
-    /** @test */
-    public function it_returns_a_json_response()
+    public function test_it_returns_a_json_response(): void
     {
-        $expected_response = file_get_contents(__DIR__ . '/../mocks/email-finder.json');
+        $expected_response = file_get_contents(__DIR__.'/../mocks/email-finder.json');
 
         Http::fake(function ($request) use ($expected_response) {
             return Http::response($expected_response);
@@ -97,6 +92,6 @@ class EmailFinderTest extends TestCase
 
         $response = $this->email_search->domain('ghost.org')->name('Dustin')->get();
 
-        $this->assertEquals(json_decode($expected_response, true)['data']['email'], $response['data']['email']);
+        $this->assertSame(json_decode($expected_response, true)['data']['email'], $response['data']['email']);
     }
 }

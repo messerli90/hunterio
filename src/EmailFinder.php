@@ -1,10 +1,10 @@
 <?php
 
-namespace Messerli90\Hunterio;
+declare(strict_types=1);
 
-use Illuminate\Support\Facades\Http;
-use Messerli90\Hunterio\Exceptions\InvalidRequestException;
-use Messerli90\Hunterio\Interfaces\EndpointInterface;
+namespace Bisnow\Hunterio;
+
+use Bisnow\Hunterio\Exceptions\InvalidRequestException;
 
 class EmailFinder extends HunterClient
 {
@@ -52,9 +52,6 @@ class EmailFinder extends HunterClient
 
     /**
      * Sets domain to search
-     *
-     * @param string $domain
-     * @return EmailFinder
      */
     public function domain(string $domain): self
     {
@@ -65,9 +62,6 @@ class EmailFinder extends HunterClient
 
     /**
      * Set company name to search
-     *
-     * @param string $company
-     * @return EmailFinder
      */
     public function company(string $company): self
     {
@@ -82,15 +76,11 @@ class EmailFinder extends HunterClient
      * sets `first_name` and `last_name` when passing two arguments
      *
      * Note that you'll get better results by supplying the person's first and last name if you can.
-     *
-     * @param string $first_name
-     * @param string|null $last_name
-     * @return EmailFinder
      */
     public function name(string $first_name, string $last_name = null): self
     {
         if ($last_name === null) {
-            $this->full_name = implode("+", explode(" ", $first_name));
+            $this->full_name = implode('+', explode(' ', $first_name));
             $this->first_name = null;
             $this->last_name = null;
         } else {
@@ -106,6 +96,7 @@ class EmailFinder extends HunterClient
      * Build query with set attributes
      *
      * @return string
+     *
      * @throws InvalidRequestException
      */
     public function make()
@@ -120,14 +111,14 @@ class EmailFinder extends HunterClient
         $this->query_params = [
             'company' => $this->company ?? null,
             'domain' => $this->domain ?? null,
-            'api_key' => $this->api_key ?? null
+            'api_key' => $this->api_key ?? null,
         ];
 
         if ($this->full_name) {
             $this->query_params = array_merge($this->query_params, ['full_name' => $this->full_name]);
         } else {
             $this->query_params = array_merge($this->query_params, [
-                'first_name' => $this->first_name, 'last_name' => $this->last_name
+                'first_name' => $this->first_name, 'last_name' => $this->last_name,
             ]);
         }
 

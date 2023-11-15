@@ -1,0 +1,70 @@
+{
+    "preset": "laravel",
+    "rules": {
+        "blank_line_between_import_groups": false,
+        "concat_space": {
+            "spacing": "none"
+        },
+        "class_attributes_separation": {
+            "elements": {
+                "case": "none",
+                "const": "one",
+                "method": "one",
+                "property": "one",
+                "trait_import": "none"
+            }
+        },
+        "curly_braces_position": {
+            "control_structures_opening_brace": "same_line",
+            "functions_opening_brace": "next_line_unless_newline_at_signature_end",
+            "anonymous_functions_opening_brace": "same_line",
+            "classes_opening_brace": "next_line_unless_newline_at_signature_end",
+            "anonymous_classes_opening_brace": "next_line_unless_newline_at_signature_end",
+            "allow_single_line_empty_anonymous_classes": true,
+            "allow_single_line_anonymous_functions": false
+        },
+        "declare_equal_normalize": {
+            "space": "none"
+        },
+        "declare_strict_types": true,
+        "explicit_string_variable": false,
+        "global_namespace_import": {
+            "import_classes": true,
+            "import_constants": true,
+            "import_functions": true
+        },
+        "modernize_types_casting": true,
+        "new_with_braces": {
+            "named_class": true,
+            "anonymous_class": true
+        },
+        "no_multiple_statements_per_line": true,
+        "ordered_imports": {
+            "sort_algorithm": "alpha",
+            "imports_order": [
+                "const",
+                "class",
+                "function"
+            ]
+        },
+        "ordered_interfaces": true,
+        "ordered_traits": true,
+        "php_unit_construct": true,
+        "php_unit_dedicate_assert_internal_type": true,
+        "php_unit_method_casing": {
+            "case": "snake_case"
+        },
+        "php_unit_set_up_tear_down_visibility": true,
+        "php_unit_strict": true,
+        "php_unit_test_annotation": {
+            "style": "prefix"
+        },
+        "php_unit_test_case_static_method_calls": {
+            "call_type": "this"
+        },
+        "simple_to_complex_string_variable": true,
+        "single_import_per_statement": true,
+        "single_trait_insert_per_statement": true,
+        "void_return": true
+    }
+}

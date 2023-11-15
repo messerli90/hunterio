@@ -1,12 +1,12 @@
 <?php
 
-namespace Messerli90\Hunterio;
+declare(strict_types=1);
 
-use Illuminate\Support\Facades\Http;
-use Messerli90\Hunterio\Exceptions\AuthorizationException;
-use Messerli90\Hunterio\Exceptions\InvalidRequestException;
-use Messerli90\Hunterio\Exceptions\UsageException;
-use Messerli90\Hunterio\Interfaces\EndpointInterface;
+namespace Bisnow\Hunterio;
+
+use Bisnow\Hunterio\Exceptions\AuthorizationException;
+use Bisnow\Hunterio\Exceptions\InvalidRequestException;
+use Bisnow\Hunterio\Exceptions\UsageException;
 
 class EmailVerifier extends HunterClient
 {
@@ -26,9 +26,6 @@ class EmailVerifier extends HunterClient
 
     /**
      * Sets email to search
-     *
-     * @param string $email
-     * @return EmailVerifier
      */
     public function email(string $email): self
     {
@@ -40,8 +37,8 @@ class EmailVerifier extends HunterClient
     /**
      * Shortcut to set email and make request
      *
-     * @param string $email
      * @return mixed
+     *
      * @throws InvalidRequestException
      * @throws AuthorizationException
      * @throws UsageException
@@ -49,6 +46,7 @@ class EmailVerifier extends HunterClient
     public function verify(string $email)
     {
         $this->email($email)->make();
+
         return $this->get();
     }
 
@@ -60,7 +58,7 @@ class EmailVerifier extends HunterClient
 
         $this->query_params = [
             'email' => $this->email ?? null,
-            'api_key' => $this->api_key ?? null
+            'api_key' => $this->api_key ?? null,
         ];
 
         return $this->query_params;

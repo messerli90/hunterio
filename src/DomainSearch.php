@@ -1,13 +1,13 @@
 <?php
 
-namespace Messerli90\Hunterio;
+declare(strict_types=1);
 
-use Messerli90\Hunterio\Exceptions\InvalidRequestException;
+namespace Bisnow\Hunterio;
+
+use Bisnow\Hunterio\Exceptions\InvalidRequestException;
 
 /**
  * This API endpoint searchers all the email addresses corresponding to one website.
- *
- * @package Messerli90\Hunterio
  */
 class DomainSearch extends HunterClient
 {
@@ -69,9 +69,6 @@ class DomainSearch extends HunterClient
 
     /**
      * Sets domain to search
-     *
-     * @param string $domain
-     * @return DomainSearch
      */
     public function domain(string $domain): self
     {
@@ -82,9 +79,6 @@ class DomainSearch extends HunterClient
 
     /**
      * Set company name to search
-     *
-     * @param string $company
-     * @return DomainSearch
      */
     public function company(string $company): self
     {
@@ -95,9 +89,6 @@ class DomainSearch extends HunterClient
 
     /**
      * Set max number of emails to return. Max 100
-     *
-     * @param int $limit
-     * @return DomainSearch
      */
     public function limit(int $limit): self
     {
@@ -108,9 +99,6 @@ class DomainSearch extends HunterClient
 
     /**
      * Set the number of email addresses to skip
-     *
-     * @param int $offset
-     * @return DomainSearch
      */
     public function offset(int $offset): self
     {
@@ -123,13 +111,10 @@ class DomainSearch extends HunterClient
      * Set the type of email addresses to include in search
      * A "generic" email address is a role-based email address, like contact@hunter.io.
      * On the contrary, a "personal" email address is the address of someone in the company.
-     *
-     * @param string $type
-     * @return DomainSearch
      */
     public function type(string $type): self
     {
-        if (!in_array($type, ['generic', 'personal'])) {
+        if (! in_array($type, ['generic', 'personal'])) {
             throw new InvalidRequestException('Type must be either "generic" or "personal".');
         }
         $this->type = $type;
@@ -141,8 +126,7 @@ class DomainSearch extends HunterClient
      * Set the selected seniority levels to include in search
      * The possible values are junior, senior or executive. Several seniority levels can be selected
      *
-     * @param string|array $seniority
-     * @return DomainSearch
+     * @param  string|array  $seniority
      */
     public function seniority($seniority): self
     {
@@ -157,14 +141,13 @@ class DomainSearch extends HunterClient
      * Set the selected departments to include in search
      * The possible values are executive, it, finance, management, sales, legal, support, hr, marketing or communication
      *
-     * @param string|array $department
-     * @return DomainSearch
+     * @param  string|array  $department
      */
     public function department($department): self
     {
         $this->department = array_filter((array) $department, function ($val) {
             return in_array($val, [
-                'executive', 'it', 'finance', 'management', 'sales', 'legal', 'support', 'hr', 'marketing', 'communication'
+                'executive', 'it', 'finance', 'management', 'sales', 'legal', 'support', 'hr', 'marketing', 'communication',
             ]);
         });
 
@@ -175,6 +158,7 @@ class DomainSearch extends HunterClient
      * Build query with set attributes
      *
      * @return string
+     *
      * @throws InvalidRequestException
      */
     public function make()
@@ -187,11 +171,11 @@ class DomainSearch extends HunterClient
             'company' => $this->company ?? null,
             'domain' => $this->domain ?? null,
             'type' => $this->type ?? null,
-            'department' => count($this->department) ? implode(",", $this->department) : null,
-            'seniority' => count($this->seniority) ? implode(",", $this->seniority) : null,
+            'department' => count($this->department) ? implode(',', $this->department) : null,
+            'seniority' => count($this->seniority) ? implode(',', $this->seniority) : null,
             'limit' => $this->limit ?? null,
             'offset' => $this->offset ?? null,
-            'api_key' => $this->api_key ?? null
+            'api_key' => $this->api_key ?? null,
         ];
 
         return $this->query_params;

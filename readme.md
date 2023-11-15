@@ -1,10 +1,5 @@
 # Hunter.io
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/messerli90/hunterio.svg?style=flat-square)](https://packagist.org/packages/messerli90/hunterio)
-[![Build Status](https://img.shields.io/travis/messerli90/hunterio/main.svg?style=flat-square)](https://travis-ci.org/messerli90/hunterio)
-[![Quality Score](https://img.shields.io/scrutinizer/g/messerli90/hunterio.svg?style=flat-square)](https://scrutinizer-ci.com/g/messerli90/hunterio)
-[![Total Downloads](https://img.shields.io/packagist/dt/messerli90/hunterio.svg?style=flat-square)](https://packagist.org/packages/messerli90/hunterio)
-
 Using this package you can easily query the [Hunter.io](https://hunter.io/) API.
 
 Here are some examples of the provided methods:
@@ -24,22 +19,20 @@ Hunter::emailFinder()->company('Ghost')->name('John Doe')->get();
 
 ## Installation
 
-> Requires Laravel 8+ and PHP 7.4+
-> 
-> For Laravel 7 use `messerli90/hunter@1.1.0`
+> Requires Laravel 10+ and PHP 8.2+
 
 You can install the package via composer:
 
 ```bash
-composer require messerli90/hunterio
+composer require bisnow/hunterio
 ```
 
-You'll need an [API key](https://hunter.io/api) from Hunter.io
+You'll need an [API key](https://hunter.io/api) from Hunter.io.
 
 Optionally, you can publish the config file of this package with this command:
 
 ```bash
-php artisan vendor:publish --provider="Messerli90\Hunterio\HunterServiceProvider"
+php artisan vendor:publish --provider="Bisnow\Hunterio\HunterServiceProvider"
 ```
 
 or, manually add it to your `config/services.php` file
@@ -93,7 +86,7 @@ Hunter::emailFinder()->company('Ghost')->name('John Doe')->get();
 
 ### Email Count
 
-This API endpoint allows you to know how many email addresses we have for one domain or for one company. It's free and doesn't require authentication.
+This API endpoint allows you to know how many email addresses we have for one domain or for one company. It's free and does not require authentication.
 
 > This endpoint is public does not require an API key
 

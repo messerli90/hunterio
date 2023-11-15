@@ -1,13 +1,15 @@
 <?php
 
-namespace Messerli90\Hunterio;
+declare(strict_types=1);
 
+namespace Bisnow\Hunterio;
+
+use Bisnow\Hunterio\Exceptions\AuthorizationException;
+use Bisnow\Hunterio\Exceptions\InvalidRequestException;
+use Bisnow\Hunterio\Exceptions\UsageException;
+use Bisnow\Hunterio\Interfaces\EndpointInterface;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
-use Messerli90\Hunterio\Exceptions\AuthorizationException;
-use Messerli90\Hunterio\Exceptions\InvalidRequestException;
-use Messerli90\Hunterio\Exceptions\UsageException;
-use Messerli90\Hunterio\Interfaces\EndpointInterface;
 
 class HunterClient implements EndpointInterface
 {
@@ -15,16 +17,15 @@ class HunterClient implements EndpointInterface
     protected $api_key;
 
     /** @var string */
-    protected $base_url = "https://api.hunter.io/v2";
+    protected $base_url = 'https://api.hunter.io/v2';
 
     /** @var string */
-    public $endpoint = "";
+    public $endpoint = '';
 
     /** @var array */
     public $query_params = [];
 
     /**
-     * @param string|null $api_key
      * @throws AuthorizationException
      */
     public function __construct(string $api_key = null)
@@ -36,8 +37,7 @@ class HunterClient implements EndpointInterface
     }
 
     /**
-     *
-     * @param mixed $attr
+     * @param  mixed  $attr
      * @return mixed
      */
     public function __get($attr)
@@ -68,13 +68,13 @@ class HunterClient implements EndpointInterface
         }
     }
 
-    protected function handleErrors(Response $response)
+    protected function handleErrors(Response $response): void
     {
         $message = $response->json()['errors'][0]['details'];
         if ($response->status() === 401) {
             // No valid API key was provided.
             throw new AuthorizationException($message);
-        } else if (in_array($response->status(), [403, 429])) {
+        } elseif (in_array($response->status(), [403, 429])) {
             // Thrown when `usage limit` or `rate limit` is reached
             // Upgrade your plan if necessary.
             throw new UsageException($message);
