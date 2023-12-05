@@ -14,12 +14,12 @@
     "require": {
         "php": "^8.2",
         "guzzlehttp/guzzle": "^7.8",
-        "illuminate/http": "^10.0"
+        "illuminate/http": "^10.0 || ^9.0"
     },
     "require-dev": {
         "laravel/pint": "^1.13",
-        "orchestra/testbench": "^8.15",
-        "phpunit/phpunit": "^10.4"
+        "orchestra/testbench": "^8.16 || ^7.36",
+        "phpunit/phpunit": "^10.5 || ^9.5"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
